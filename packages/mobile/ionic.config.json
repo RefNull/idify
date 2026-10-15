@@ -1,7 +1,0 @@
-{
-  "name": "idify",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
