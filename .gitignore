@@ -29,5 +29,6 @@ yarn-error.log*
 .eslintcache
 
 temp
+packages/mcp/native/idify-vision
 # TypeScript incremental build info
 *.tsbuildinfo
