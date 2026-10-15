@@ -1,18 +1,20 @@
 import { useContext, useEffect, useState } from 'react'
+import { useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined'
 import Tooltip from '@mui/material/Tooltip'
-import { useAppStore, useCropStore, useSegementStore } from '../stores'
+import { useCropStore, useSegementStore } from '../stores'
 import ConfigContext from './ConfigContext'
 
 export function ImageSegment() {
+  const intl = useIntl()
   const config = useContext(ConfigContext)
   const { error, loading, progress, step, process } = useSegementStore()
   const [tooltipOpen, setTooltipOpen] = useState(false)
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined
     if (loading) {
       // wait animation finish
       timer = setTimeout(() => {
@@ -34,7 +36,17 @@ export function ImageSegment() {
         arrow
         open={tooltipOpen}
         placement="left"
-        title={step === 1 ? 'AI model downloading ...' : 'Image segmenting...'}
+        title={
+          step === 1
+            ? intl.formatMessage({
+                id: 'segmentDownloading',
+                defaultMessage: 'Downloading the AI model…',
+              })
+            : intl.formatMessage({
+                id: 'segmentProcessing',
+                defaultMessage: 'Removing the background…',
+              })
+        }
       >
         <Box className="relative z-10">
           <CircularProgress
@@ -52,19 +64,28 @@ export function ImageSegment() {
     )
   }
   if (error) {
+    const retryLabel = intl.formatMessage({
+      id: 'segmentRetry',
+      defaultMessage: 'Retry background removal',
+    })
     return (
-      <IconButton
-        className="relative z-10 text-white"
-        size="small"
-        onClick={() => {
-          const { image } = useCropStore.getState()
-          if (image) {
-            process(image, config.segment)
-          }
-        }}
-      >
-        <ReplayOutlinedIcon />
-      </IconButton>
+      <Tooltip arrow placement="left" title={retryLabel}>
+        <IconButton
+          className="relative z-10 text-white"
+          size="small"
+          aria-label={retryLabel}
+          onClick={() => {
+            const { image } = useCropStore.getState()
+            if (image) {
+              process(image, config.segment).catch(() => {
+                // The cropper shows the failure notice.
+              })
+            }
+          }}
+        >
+          <ReplayOutlinedIcon />
+        </IconButton>
+      </Tooltip>
     )
   }
   return null

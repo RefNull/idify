@@ -27,7 +27,7 @@ export default {
   th,
   tr,
   vi,
-  zhHK,
-  zhTW,
+  'zh-HK': zhHK,
+  'zh-TW': zhTW,
   zh,
 } as any

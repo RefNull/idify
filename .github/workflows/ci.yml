@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: |
+          for p in common web; do
+            echo "::group::tsc $p"
+            (cd packages/$p && npx tsc --noEmit -p .)
+            echo "::endgroup::"
+          done
+
+      - name: Lint
+        run: pnpm -r --if-present lint
+
+      - name: Test
+        run: pnpm -r --if-present test
+
+      - name: Build web
+        run: pnpm --filter @idify/web build
+

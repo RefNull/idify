@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { throttle } from 'lodash-es'
 import imglyRemoveBackground from '@zhbhun/background-removal'
+import { refineCutoutBlob } from '../utils/matte'
 
 export interface SegmentState {
   image: string
@@ -43,16 +44,32 @@ export const defaultSegementState: SegmentState = {
 /** AI Model already downloaded */
 let downloaded = false
 let interval: ReturnType<typeof setInterval> | undefined
-let ts = 0
 let onProgress: (key: string, current: number, total: number) => void = () => {}
+/** Rejection for a run replaced by a newer image or a reset; safe to ignore. */
+export class SegmentSupersededError extends Error {
+  name = 'SegmentSupersededError'
+  constructor() {
+    super('Background removal superseded')
+  }
+}
+
+/** Incremented per run and on reset, so a superseded run can't touch state. */
+let runId = 0
+
+function revokeBlobURL(url: string) {
+  if (url && url.startsWith('blob:')) {
+    URL.revokeObjectURL(url)
+  }
+}
 
 export const useSegementStore = create<SegmentStore>((set, get) => ({
   ...defaultSegementState,
   process(image: string, options?: SegmentOptions) {
     get().clear()
-    window.gtag?.('event', 'click', {
-      object: 'background_remove',
-    })
+    const run = ++runId
+    const isCurrent = () => run === runId
+    // The previous cutout is only shown while its run is current.
+    revokeBlobURL(get().result)
     set({
       ...defaultSegementState,
       image,
@@ -63,7 +80,7 @@ export const useSegementStore = create<SegmentStore>((set, get) => ({
     let lastDownloadKey = ''
     const startTime = Date.now()
     onProgress = throttle((key: string, current: number, total: number) => {
-      if (!get().loading) {
+      if (!isCurrent() || !get().loading) {
         return
       }
       if (!downloaded) {
@@ -105,18 +122,23 @@ export const useSegementStore = create<SegmentStore>((set, get) => ({
       }
     }, 1000)
     return imglyRemoveBackground(image, {
-      ts: downloaded ? ts : ++ts,
       progress: (key: string, current: number, total: number) => {
         onProgress(key, current, total)
       },
       ...options,
     })
+      .then((blob) =>
+        // Narrow the soft edge and remove the old backdrop's colour from it;
+        // fall back to the raw cutout if the browser can't decode it here.
+        isCurrent() ? refineCutoutBlob(blob).catch(() => blob) : blob
+      )
       .then((blob) => {
-        window.gtag?.('event', 'click', {
-          object: 'background_remove_success',
-          duration: Date.now() - startTime,
-        })
         const url = URL.createObjectURL(blob)
+        if (!isCurrent()) {
+          // Superseded by a newer image or a reset: drop this result.
+          URL.revokeObjectURL(url)
+          throw new SegmentSupersededError()
+        }
         set({
           error: null,
           loading: false,
@@ -125,10 +147,9 @@ export const useSegementStore = create<SegmentStore>((set, get) => ({
         return url
       })
       .catch((error) => {
-        window.gtag?.('event', 'click', {
-          object: 'background_remove_fail',
-          duration: Date.now() - startTime,
-        })
+        if (!isCurrent() || error instanceof SegmentSupersededError) {
+          throw error
+        }
         set({
           error,
           loading: false,
@@ -144,6 +165,8 @@ export const useSegementStore = create<SegmentStore>((set, get) => ({
   },
   reset() {
     get().clear()
+    runId += 1
+    revokeBlobURL(get().result)
     set(defaultSegementState)
   },
 }))

@@ -8,6 +8,8 @@ import {
   RetouchBackgroundGradientAngle,
   useRetouchStore,
 } from '../../stores'
+import { hasGradientBackground } from '../../utils'
+import ComplianceWarning from './ComplianceWarning'
 
 export function ColorPicker() {
   const [background, setBackground] = useRetouchStore((state) => [
@@ -48,6 +50,7 @@ export function ColorPicker() {
   )
   return (
     <Box className="p-[16px] pb-0">
+      <ComplianceWarning show={hasGradientBackground(background)} />
       <Box className="flex justify-center">
         <ToggleButtonGroup
           className="m-auto px-[16px]"

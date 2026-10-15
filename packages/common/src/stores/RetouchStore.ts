@@ -71,12 +71,15 @@ export interface RetouchState {
   image: string
   background: RetouchBackground
   adjustment: RetouchAdjustment
+  /** Show the head-position guides over the preview. */
+  guides: boolean
 }
 
 export interface RetouchActions {
   setImage(image: string): void
   setBackground(background: RetouchBackground): void
   setAdjustment(adjustment: RetouchAdjustment): void
+  toggleGuides(): void
   reset(): void
 }
 
@@ -92,12 +95,25 @@ export const defaultRetouchState: RetouchState = {
     },
   },
   adjustment: {},
+  guides: false,
+}
+
+/** The cropped photo is a blob URL owned by this store; free it when replaced. */
+function revokeBlobURL(url: string) {
+  if (url && url.startsWith('blob:')) {
+    URL.revokeObjectURL(url)
+  }
 }
 
 export const useRetouchStore = create<RetouchStore>((set, get) => ({
   ...defaultRetouchState,
   setImage(image: string) {
-    set({ ...defaultRetouchState, image })
+    const previous = get().image
+    if (previous !== image) {
+      revokeBlobURL(previous)
+    }
+    // Keep the guide toggle across images; it is a view preference.
+    set({ ...defaultRetouchState, image, guides: get().guides })
   },
   setBackground(background: RetouchBackground) {
     set({ background })
@@ -105,7 +121,11 @@ export const useRetouchStore = create<RetouchStore>((set, get) => ({
   setAdjustment(adjustment: RetouchAdjustment) {
     set({ adjustment: { ...get().adjustment, ...adjustment } })
   },
+  toggleGuides() {
+    set({ guides: !get().guides })
+  },
   reset() {
+    revokeBlobURL(get().image)
     set(defaultRetouchState)
   },
 }))

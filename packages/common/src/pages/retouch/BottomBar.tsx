@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import GradientIcon from '@mui/icons-material/Gradient'
 import PaletteIcon from '@mui/icons-material/Palette'
+import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined'
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined'
+import FilterVintageOutlinedIcon from '@mui/icons-material/FilterVintageOutlined'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
@@ -10,12 +12,16 @@ import Stack from '@mui/material/Stack'
 import BackgroundColorPicker from './BackgroundColorPicker'
 import BackgroundGraientPicker from './BackgroundGraientPicker'
 import Adjustment from './Adjustment'
+import FilterPicker from './FilterPicker'
+import { useRetouchStore } from '../../stores'
 
 type ActiveType = '' | 'color' | 'gradient' | 'adjust' | 'filter'
 
 export function BottomBar() {
   const intl = useIntl()
   const [active, setActive] = useState<ActiveType>('')
+  const guides = useRetouchStore((state) => state.guides)
+  const toggleGuides = useRetouchStore((state) => state.toggleGuides)
   return (
     <Paper
       className="flex flex-col grow-0 shrink-0 rounded-t-2xl overflow-hidden sm:mx-auto sm:w-[400px]"
@@ -25,6 +31,7 @@ export function BottomBar() {
       {active === 'color' ? <BackgroundColorPicker /> : null}
       {active === 'gradient' ? <BackgroundGraientPicker /> : null}
       {active === 'adjust' ? <Adjustment /> : null}
+      {active === 'filter' ? <FilterPicker /> : null}
       {active ? <Divider /> : null}
       <Stack
         className="py-[6px] px-[10px]"
@@ -69,7 +76,22 @@ export function BottomBar() {
             <span>{intl.formatMessage({ id: 'adjust' })}</span>
           </Stack>
         </Button>
-        {/* <Button
+        <Button
+          size="small"
+          color={guides ? 'primary' : 'inherit'}
+          onClick={toggleGuides}
+        >
+          <Stack direction="column" alignItems="center" spacing={0.5}>
+            <StraightenOutlinedIcon fontSize="small" />
+            <span>
+              {intl.formatMessage({
+                id: 'guides',
+                defaultMessage: 'Guides',
+              })}
+            </span>
+          </Stack>
+        </Button>
+        <Button
           size="small"
           color={active === 'filter' ? 'primary' : 'inherit'}
           onClick={() => {
@@ -78,9 +100,11 @@ export function BottomBar() {
         >
           <Stack direction="column" alignItems="center" spacing={0.5}>
             <FilterVintageOutlinedIcon fontSize="small" />
-            <span>Filter</span>
+            <span>
+              {intl.formatMessage({ id: 'filter', defaultMessage: 'Filter' })}
+            </span>
           </Stack>
-        </Button> */}
+        </Button>
       </Stack>
     </Paper>
   )

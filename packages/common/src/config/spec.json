@@ -74,8 +74,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -468,12 +468,13 @@
       "unit": "inch"
     },
     "rules": {
-      "minHeadHeight": 0.8,
-      "maxHeadHeight": 0.8,
+      "minHeadHeight": 0.7111,
+      "maxHeadHeight": 0.8000,
       "minHeadOffset": 0.1
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of Australia Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Australia Passport photo. The minimum head height should be 36mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 4.5mm from the top. \nPhoto for Australia Passport should be taken in a Light Grey background as shown in this example. \nYou should print Australia Passport photo on Glossy/Matte type of photo paper"
+    "prohibitBackgroundRemoval": true,
+    "comment": "The size (width x height) of Australia Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Australia Passport photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 4.5mm from the top. \nPhoto for Australia Passport should be taken in a Light Grey background as shown in this example. \nYou should print Australia Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "australia_visa",
@@ -494,6 +495,7 @@
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Australia Visa photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Australia Visa photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Australia Visa should be taken in a Light Grey background as shown in this example. \nYou should print Australia Visa photo on Glossy/Matte type of photo paper"
   },
   {
@@ -1133,8 +1135,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -1298,8 +1300,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -1605,8 +1607,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -1755,6 +1757,7 @@
       "minHeadOffset": 0.07142857142857142
     },
     "background": "#ffffff",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Canada Passport photo is 50x70 (in mm) or 5x7 (in cm) or 1.97x2.76 (in inches) or 1181x1654 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Canada Passport photo. The minimum head height should be 31mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 5mm from the top. \nPhoto for Canada Passport should be taken in a White background as shown in this example. \nYou should print Canada Passport photo on Glossy/Matte type of photo paper"
   },
   {
@@ -1835,8 +1838,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5511811023622047,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5511811023622047,
       "minHeadHeight": 0.6692913385826772,
       "minHeadOffset": 0.07874015748031496
     },
@@ -1899,14 +1902,13 @@
     },
     "rules": {
       "size": 120,
-      "maxEyeHeight": 0.5423728813559322,
-      "minEyeHeight": 0.9533898305084746,
+      "minEyeHeight": 0.5423728813559322,
       "minHeadHeight": 0.6377118644067796,
       "maxHeadHeight": 0.75,
       "minHeadOffset": 0.0614406779661017
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of China Visa online photo is 14.99x19.98 (in mm) or 1.5x2 (in cm) or 0.59x0.79 (in inches) or 354x472 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for China Visa online photo. Eye has to be at a minimum of 256pixel from the bottom. Eye has to be at a maximum of 450pixel from the bottom. The minimum head height should be 301pixel. The maximum head height should be 354pixel. Top of the head should be at a minimum of 29pixel from the top. \nPhoto for China Visa online should be taken in a White background as shown in this example. \nThe Maximum file size for China Visa online should be 120 KB"
+    "comment": "The size (width x height) of China Visa online photo is 14.99x19.98 (in mm) or 1.5x2 (in cm) or 0.59x0.79 (in inches) or 354x472 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for China Visa online photo. Eye has to be at a minimum of 256pixel from the bottom. The minimum head height should be 301pixel. The maximum head height should be 354pixel. Top of the head should be at a minimum of 29pixel from the top. \nPhoto for China Visa online should be taken in a White background as shown in this example. \nThe Maximum file size for China Visa online should be 120 KB"
   },
   {
     "name": "china_passport",
@@ -1944,14 +1946,13 @@
     },
     "rules": {
       "size": 120,
-      "maxEyeHeight": 0.5423728813559322,
-      "minEyeHeight": 0.847457627118644,
+      "minEyeHeight": 0.5423728813559322,
       "minHeadHeight": 0.6377118644067796,
       "maxHeadHeight": 0.75,
       "minHeadOffset": 0.0614406779661017
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of China Passport online photo is 14.99x19.98 (in mm) or 1.5x2 (in cm) or 0.59x0.79 (in inches) or 354x472 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for China Passport online photo. Eye has to be at a minimum of 256pixel from the bottom. Eye has to be at a maximum of 400pixel from the bottom. The minimum head height should be 301pixel. The maximum head height should be 354pixel. Top of the head should be at a minimum of 29pixel from the top. \nPhoto for China Passport online should be taken in a White background as shown in this example. \nThe Maximum file size for China Passport online should be 120 KB"
+    "comment": "The size (width x height) of China Passport online photo is 14.99x19.98 (in mm) or 1.5x2 (in cm) or 0.59x0.79 (in inches) or 354x472 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for China Passport online photo. Eye has to be at a minimum of 256pixel from the bottom. The minimum head height should be 301pixel. The maximum head height should be 354pixel. Top of the head should be at a minimum of 29pixel from the top. \nPhoto for China Passport online should be taken in a White background as shown in this example. \nThe Maximum file size for China Passport online should be 120 KB"
   },
   {
     "name": "china_green_card",
@@ -2090,8 +2091,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -2112,8 +2113,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -2175,8 +2176,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -2382,8 +2383,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -2550,8 +2551,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559,
       "minHeadOffset": 0.10039370078740158
@@ -2674,8 +2675,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -2696,8 +2697,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -3147,12 +3148,12 @@
       "unit": "mm"
     },
     "rules": {
-      "minHeadHeight": 0.7,
+      "minHeadHeight": 0.7111111111111111,
       "maxHeadHeight": 0.8,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of France Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for France Passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for France Passport should be taken in a Light Grey background as shown in this example. \nYou should print France Passport photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of France Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for France Passport photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for France Passport should be taken in a Light Grey background as shown in this example. \nYou should print France Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "france_visa",
@@ -3379,12 +3380,12 @@
       "unit": "mm"
     },
     "rules": {
-      "minHeadHeight": 0.7,
+      "minHeadHeight": 0.7111111111111111,
       "maxHeadHeight": 0.8,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of Germany Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Germany Passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Germany Passport should be taken in a Light Grey background as shown in this example. \nYou should print Germany Passport photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of Germany Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Germany Passport photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Germany Passport should be taken in a Light Grey background as shown in this example. \nYou should print Germany Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "germany_id_card",
@@ -3421,12 +3422,12 @@
       "unit": "mm"
     },
     "rules": {
-      "minHeadHeight": 0.7,
+      "minHeadHeight": 0.7111111111111111,
       "maxHeadHeight": 0.8,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of Germany Visa photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Germany Visa photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Germany Visa should be taken in a Light Grey background as shown in this example. \nYou should print Germany Visa photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of Germany Visa photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Germany Visa photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Germany Visa should be taken in a Light Grey background as shown in this example. \nYou should print Germany Visa photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "germany_driving_license",
@@ -3526,8 +3527,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.65,
+      "maxEyeHeight": 0.65,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.5166666666666667,
       "maxHeadHeight": 0.5833333333333334,
       "minHeadOffset": 0.13333333333333333
@@ -3590,8 +3591,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -3715,11 +3716,12 @@
       "unit": "inch"
     },
     "rules": {
-      "minHeadHeight": 0.7,
-      "minHeadOffset": 0.1
+      "minHeadHeight": 0.640055,
+      "minHeadOffset": 0.100009,
+      "maxHeadHeight": 0.720062
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of Hong Kong Passport photo is 40x50 (in mm) or 4x5 (in cm) or 1.57x1.97 (in inches) or 945x1181 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Hong Kong Passport photo. The minimum head height should be 35mm. Top of the head should be at a minimum of 5mm from the top. \nPhoto for Hong Kong Passport should be taken in a White background as shown in this example. \nYou should print Hong Kong Passport photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of Hong Kong Passport photo is 40x50 (in mm) or 4x5 (in cm) or 1.57x1.97 (in inches) or 945x1181 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Hong Kong Passport photo. The head height (chin to crown) should be between 32mm and 36mm. Top of the head should be at a minimum of 5mm from the top. \nPhoto for Hong Kong Passport should be taken in a White background as shown in this example. \nYou should print Hong Kong Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "hong_kong_visa",
@@ -3735,11 +3737,12 @@
       "unit": "inch"
     },
     "rules": {
-      "minHeadHeight": 0.7,
-      "minHeadOffset": 0.1
+      "minHeadHeight": 0.640055,
+      "minHeadOffset": 0.100009,
+      "maxHeadHeight": 0.720062
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of Hong Kong Visa photo is 40x50 (in mm) or 4x5 (in cm) or 1.57x1.97 (in inches) or 945x1181 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Hong Kong Visa photo. The minimum head height should be 35mm. Top of the head should be at a minimum of 5mm from the top. \nPhoto for Hong Kong Visa should be taken in a White background as shown in this example. \nYou should print Hong Kong Visa photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of Hong Kong Visa photo is 40x50 (in mm) or 4x5 (in cm) or 1.57x1.97 (in inches) or 945x1181 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Hong Kong Visa photo. The head height (chin to crown) should be between 32mm and 36mm. Top of the head should be at a minimum of 5mm from the top. \nPhoto for Hong Kong Visa should be taken in a White background as shown in this example. \nYou should print Hong Kong Visa photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "hungary_passport",
@@ -3797,8 +3800,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -3882,8 +3885,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -3899,18 +3902,17 @@
     "flag": "🇮🇳",
     "dimension": {
       "dpi": 600,
-      "width": 1200,
-      "height": 1200,
-      "unit": "inch"
+      "width": 827,
+      "height": 1063,
+      "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
-      "minHeadHeight": 0.5,
-      "maxHeadHeight": 0.6889763779527559
+      "minHeadHeight": 0.8,
+      "maxHeadHeight": 0.85
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of India Passport photo is 50.8x50.8 (in mm) or 5.08x5.08 (in cm) or 2x2 (in inches) or 1200x1200 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for India Passport photo. Eye has to be at a minimum of 28.5mm from the bottom. Eye has to be at a maximum of 35mm from the bottom. The minimum head height should be 25.4mm. The maximum head height should be 35mm. \nPhoto for India Passport should be taken in a White background as shown in this example. \nYou should print India Passport photo on Glossy/Matte type of photo paper"
+    "prohibitBackgroundRemoval": true,
+    "comment": "The size (width x height) of India Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI). Digital uploads must be 630x810 pixels and at most 250 KB.\nCare should be taken to position the face within the photo as per the following requirements for India Passport photo. The full head (top of hair to bottom of chin) should take up 80-85% of the photo height (36mm to 38.25mm). \nPhoto for India Passport should be taken in a White background as shown in this example. The photo must not be altered by computer software. \nYou should print India Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "india_passport_(from_thailand)",
@@ -4088,8 +4090,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4110,8 +4112,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4195,8 +4197,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4217,8 +4219,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4303,8 +4305,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4372,6 +4374,7 @@
       "minHeadOffset": 0.13999999999999999
     },
     "background": "#d3d3d3",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Ireland Passport online photo is 30.27x40.26 (in mm) or 3.03x4.03 (in cm) or 1.19x1.59 (in inches) or 715x951 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Ireland Passport online photo. The minimum head height should be 523pixel. Top of the head should be at a minimum of 133.14pixel from the top. \nPhoto for Ireland Passport online should be taken in a Light Grey background as shown in this example. \nThe Maximum file size for Ireland Passport online should be 9000 KB"
   },
   {
@@ -4393,6 +4396,7 @@
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Ireland Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Ireland Passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Ireland Passport should be taken in a Light Grey background as shown in this example. \nYou should print Ireland Passport photo on Glossy/Matte type of photo paper"
   },
   {
@@ -4532,8 +4536,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4741,8 +4745,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -4763,12 +4767,13 @@
       "unit": "mm"
     },
     "rules": {
-      "minHeadHeight": 0.7,
+      "minHeadHeight": 0.7111111111111111,
       "maxHeadHeight": 0.8,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of Japan Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Japan Passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Japan Passport should be taken in a Light Grey background as shown in this example. \nYou should print Japan Passport photo on Glossy/Matte type of photo paper"
+    "prohibitBackgroundRemoval": true,
+    "comment": "The size (width x height) of Japan Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Japan Passport photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for Japan Passport should be taken in a Light Grey background as shown in this example. \nYou should print Japan Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "japan_alien_registration_card",
@@ -5087,8 +5092,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -5216,8 +5221,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559,
       "minHeadOffset": 0.10039370078740158
@@ -5239,8 +5244,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559,
       "minHeadOffset": 0.10039370078740158
@@ -5324,8 +5329,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -5487,8 +5492,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -5615,8 +5620,8 @@
     },
     "rules": {
       "size": 240,
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -5820,8 +5825,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -6398,8 +6403,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -6630,8 +6635,8 @@
     },
     "rules": {
       "size": 10240,
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.55,
       "maxHeadHeight": 0.75
     },
@@ -6674,12 +6679,13 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
     "background": "#d3d3d3",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of New Zealand Passport photo photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for New Zealand Passport photo photo. Eye has to be at a minimum of 22.5mm from the bottom. Eye has to be at a maximum of 31.5mm from the bottom. The minimum head height should be 29.25mm. The maximum head height should be 33.75mm. \nPhoto for New Zealand Passport photo should be taken in a Light Grey background as shown in this example. \nYou should print New Zealand Passport photo photo on Glossy/Matte type of photo paper"
   },
   {
@@ -6696,8 +6702,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
@@ -6718,8 +6724,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
@@ -6740,8 +6746,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
@@ -6762,8 +6768,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
@@ -6784,8 +6790,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.65,
       "maxHeadHeight": 0.75
     },
@@ -6848,8 +6854,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -6913,8 +6919,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -7077,8 +7083,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5222222222222223,
-      "minEyeHeight": 0.6666666666666666,
+      "maxEyeHeight": 0.6666666666666666,
+      "minEyeHeight": 0.5222222222222223,
       "minHeadHeight": 0.6
     },
     "background": "#ffffff",
@@ -7224,8 +7230,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -7350,8 +7356,8 @@
       "unit": "inch"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -7783,8 +7789,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -8149,8 +8155,8 @@
     },
     "rules": {
       "size": 200,
-      "maxEyeHeight": 0.466403162055336,
-      "minEyeHeight": 0.6837944664031621,
+      "maxEyeHeight": 0.6837944664031621,
+      "minEyeHeight": 0.466403162055336,
       "minHeadHeight": 0.6521739130434783,
       "maxHeadHeight": 0.7114624505928854,
       "minHeadOffset": 0.05988142292490119
@@ -8172,8 +8178,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -8298,8 +8304,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -8449,6 +8455,7 @@
       "minHeadOffset": 0.08988326848249027
     },
     "background": "#ffffff",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Singapore Passport online photo is 16.93x21.76 (in mm) or 1.69x2.18 (in cm) or 0.67x0.86 (in inches) or 400x514 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Singapore Passport online photo. The minimum head height should be 380.3pixel. Top of the head should be at a minimum of 46.2pixel from the top. \nPhoto for Singapore Passport online should be taken in a White background as shown in this example. \nThe Maximum file size for Singapore Passport online should be 60 KB"
   },
   {
@@ -8489,6 +8496,7 @@
       "minHeadOffset": 0.08888888888888889
     },
     "background": "#ffffff",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of Singapore Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for Singapore Passport photo. The minimum head height should be 33.3mm. Top of the head should be at a minimum of 4mm from the top. \nPhoto for Singapore Passport should be taken in a White background as shown in this example. \nYou should print Singapore Passport photo on Matte type of photo paper"
   },
   {
@@ -8646,12 +8654,12 @@
       "unit": "inch"
     },
     "rules": {
-      "minHeadHeight": 0.7,
-      "maxHeadHeight": 0.8,
+      "minHeadHeight": 0.6444444444444445,
+      "maxHeadHeight": 0.7555555555555555,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#d3d3d3",
-    "comment": "The size (width x height) of South Africa Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for South Africa Passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for South Africa Passport should be taken in a Light Grey background as shown in this example. \nYou should print South Africa Passport photo on Glossy/Matte type of photo paper"
+    "comment": "The size (width x height) of South Africa Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for South Africa Passport photo. The minimum head height should be 29mm. The maximum head height should be 34mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for South Africa Passport should be taken in a Light Grey (or plain cream) background as shown in this example. \nYou should print South Africa Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "south_africa_visa",
@@ -8709,12 +8717,13 @@
       "unit": "mm"
     },
     "rules": {
-      "minHeadHeight": 0.7,
+      "minHeadHeight": 0.7111111111111111,
       "maxHeadHeight": 0.8,
       "minHeadOffset": 0.06666666666666667
     },
     "background": "#ffffff",
-    "comment": "The size (width x height) of South Korea Korea passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for South Korea Korea passport photo. The minimum head height should be 31.5mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for South Korea Korea passport should be taken in a White background as shown in this example. \nYou should print South Korea Korea passport photo on Glossy/Matte type of photo paper"
+    "prohibitBackgroundRemoval": true,
+    "comment": "The size (width x height) of South Korea Korea passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for South Korea Korea passport photo. The minimum head height should be 32mm. The maximum head height should be 36mm. Top of the head should be at a minimum of 3mm from the top. \nPhoto for South Korea Korea passport should be taken in a White background as shown in this example. \nYou should print South Korea Korea passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "south_korea_korea_alien_registration",
@@ -8917,8 +8926,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9311,8 +9320,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9394,8 +9403,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9437,8 +9446,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9601,8 +9610,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559,
       "minHeadOffset": 0.10039370078740158
@@ -9828,8 +9837,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9930,8 +9939,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9952,8 +9961,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -9974,8 +9983,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10163,8 +10172,9 @@
       "maxHeadHeight": 0.7555555555555555,
       "minHeadOffset": 0.1088888888888889
     },
-    "background": "#ffffff",
-    "comment": "The size (width x height) of United Kingdom Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for United Kingdom Passport photo. The minimum head height should be 29mm. The maximum head height should be 34mm. Top of the head should be at a minimum of 4.9mm from the top. \nPhoto for United Kingdom Passport should be taken in a White background as shown in this example. \nYou should print United Kingdom Passport photo on Glossy/Matte type of photo paper"
+    "background": "#d3d3d3",
+    "prohibitBackgroundRemoval": true,
+    "comment": "The size (width x height) of United Kingdom Passport photo is 35x45 (in mm) or 3.5x4.5 (in cm) or 1.38x1.77 (in inches) or 827x1063 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for United Kingdom Passport photo. The minimum head height should be 29mm. The maximum head height should be 34mm. Top of the head should be at a minimum of 4.9mm from the top. \nPhoto for United Kingdom Passport should be taken in a Light Grey (or plain cream) background as shown in this example. \nYou should print United Kingdom Passport photo on Glossy/Matte type of photo paper"
   },
   {
     "name": "united_kingdom_visa",
@@ -10264,8 +10274,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10286,8 +10296,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10308,8 +10318,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10330,8 +10340,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10352,8 +10362,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10374,8 +10384,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10396,8 +10406,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10479,8 +10489,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10602,8 +10612,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -10828,8 +10838,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5610236220472441,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5610236220472441,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -11073,8 +11083,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.56,
-      "minEyeHeight": 0.7,
+      "maxEyeHeight": 0.7,
+      "minEyeHeight": 0.56,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.7
     },
@@ -11155,8 +11165,8 @@
       "unit": "mm"
     },
     "rules": {
-      "maxEyeHeight": 0.5,
-      "minEyeHeight": 0.6889763779527559,
+      "maxEyeHeight": 0.6889763779527559,
+      "minEyeHeight": 0.5,
       "minHeadHeight": 0.5,
       "maxHeadHeight": 0.6889763779527559
     },
@@ -11203,6 +11213,7 @@
       "minHeadOffset": 0.15
     },
     "background": "#ffffff",
+    "prohibitBackgroundRemoval": true,
     "comment": "The size (width x height) of United Kingdom Passport (ONLINE) photo is 38.1x50.8 (in mm) or 3.81x5.08 (in cm) or 1.5x2 (in inches) or 900x1200 (in pixels at 600DPI)\nCare should be taken to position the face within the photo as per the following requirements for United Kingdom Passport (ONLINE) photo. The minimum head height should be 660pixel. Top of the head should be at a minimum of 180pixel from the top. \nPhoto for United Kingdom Passport (ONLINE) should be taken in a White background as shown in this example. \nThe Maximum file size for United Kingdom Passport (ONLINE) should be 10240 KB"
   },
   {

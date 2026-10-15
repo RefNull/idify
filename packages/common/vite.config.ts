@@ -1,17 +1,17 @@
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+import { backgroundRemovalAssets } from './build/backgroundRemovalAssets'
 
-// https://vitejs.dev/config/
+// Dev playground for the shared package. The installable PWA lives in
+// packages/web; this package is a library and does not register one.
 export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['/favicon.ico'],
-    }),
-  ],
+  plugins: [react(), backgroundRemovalAssets({ searchPaths: [__dirname] })],
   server: {
-    host: '0.0.0.0',
+    // Local only by default; use `vite --host` to expose it on the LAN.
+    host: 'localhost',
+    fs: {
+      allow: [__dirname, path.resolve(__dirname, '../../node_modules')],
+    },
   },
 })

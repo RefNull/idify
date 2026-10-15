@@ -1,16 +1,20 @@
 import { RetouchAdjustment, RetouchBackground } from '../stores'
+import { IDPhotoDimension } from './pure'
 import {
   createGLFXCanvas,
   drawCanvasBackground,
   renderGLFXAdjustment,
 } from './canvas'
+import { withPngDensity } from './png'
+import { CropArea, getCropOutputSize, getCropTransform } from './crop'
+
+export type { IDPhotoDimension }
 
 export function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
     image.addEventListener('error', (error) => reject(error))
-    // needed to avoid cross-origin issues on CodeSandbox
     image.setAttribute('crossOrigin', 'anonymous')
     image.src = url
   })
@@ -20,73 +24,55 @@ export async function cropIDPhoto({
   image: imageURL,
   area,
   rotation,
+  flipHorizontal = false,
+  flipVertical = false,
   resolution,
 }: {
   image: string
-  area: {
-    x: number
-    y: number
-    width: number
-    height: number
-  }
+  area: CropArea
   rotation: number
+  flipHorizontal?: boolean
+  flipVertical?: boolean
   resolution: {
     width: number
     height: number
   }
 }): Promise<string> {
+  if (!(area.width > 0) || !(area.height > 0)) {
+    throw new Error('Empty crop area')
+  }
   const image = await loadImage(imageURL)
+  // Supersample for the retouch step, but keep the canvas within the limits
+  // mobile browsers can allocate.
+  const output = getCropOutputSize(resolution)
   const canvas = document.createElement('canvas')
+  canvas.width = output.width
+  canvas.height = output.height
   const ctx = canvas.getContext('2d')
   if (!ctx) {
-    return ''
+    throw new Error('Canvas 2D context unavailable')
   }
-  const rotRad = getRadianAngle(rotation)
-  // calculate bounding box of the rotated image
-  const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
-    image.width,
-    image.height,
-    rotation
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  // One transform straight from the source: no full-size rotated intermediate.
+  ctx.setTransform(
+    ...getCropTransform({
+      imageWidth: image.naturalWidth || image.width,
+      imageHeight: image.naturalHeight || image.height,
+      rotation,
+      flipHorizontal,
+      flipVertical,
+      area,
+      outputWidth: output.width,
+      outputHeight: output.height,
+    })
   )
-  canvas.width = bBoxWidth
-  canvas.height = bBoxHeight
-  ctx.clearRect(0, 0, bBoxWidth, bBoxHeight)
-  ctx.translate(bBoxWidth / 2, bBoxHeight / 2)
-  ctx.rotate(rotRad)
-  // ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
-  ctx.translate(-image.width / 2, -image.height / 2)
-  // draw rotated image
   ctx.drawImage(image, 0, 0)
-
-  const croppedCanvas = document.createElement('canvas')
-  // Set the size of the cropped canvas
-  croppedCanvas.width = resolution.width * 3
-  croppedCanvas.height = resolution.height * 3
-  const croppedCtx = croppedCanvas.getContext('2d')
-  if (!croppedCtx) {
-    return ''
-  }
-
-  croppedCtx.scale(3, 3)
-  croppedCtx.clearRect(0, 0, resolution.width, resolution.height)
-
-  // Draw the cropped image onto the new canvas
-  croppedCtx.drawImage(
-    // croppedImage,
-    canvas,
-    area.x,
-    area.y,
-    area.width,
-    area.height,
-    0,
-    0,
-    resolution.width,
-    resolution.height
-  )
-
-  // As a blob
   return new Promise((resolve, reject) => {
-    croppedCanvas.toBlob((file) => {
+    canvas.toBlob((file) => {
+      // Release the backing store early; large canvases add up on iOS.
+      canvas.width = 0
+      canvas.height = 0
       if (file) {
         resolve(URL.createObjectURL(file))
       } else {
@@ -94,25 +80,10 @@ export async function cropIDPhoto({
       }
     }, 'image/png')
   })
-
-  function getRadianAngle(degreeValue: number) {
-    return (degreeValue * Math.PI) / 180
-  }
-  function rotateSize(width: number, height: number, rotation: number) {
-    const rotRad = getRadianAngle(rotation)
-
-    return {
-      width:
-        Math.abs(Math.cos(rotRad) * width) +
-        Math.abs(Math.sin(rotRad) * height),
-      height:
-        Math.abs(Math.sin(rotRad) * width) +
-        Math.abs(Math.cos(rotRad) * height),
-    }
-  }
 }
 
-export async function createIDPhoto({
+/** Render one finished ID photo (background + adjustments) onto a canvas. */
+export async function renderIDPhotoCanvas({
   image: imageURL,
   background,
   adjustment,
@@ -125,7 +96,7 @@ export async function createIDPhoto({
     width: number
     height: number
   }
-}): Promise<Blob | null> {
+}): Promise<HTMLCanvasElement | null> {
   const image = await loadImage(imageURL)
   const canvas = document.createElement('canvas')
   canvas.width = resolution.width
@@ -150,6 +121,10 @@ export async function createIDPhoto({
     resolution.width,
     resolution.height
   )
+  return canvas
+}
+
+function canvasToPNG(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
       if (file) {
@@ -159,4 +134,32 @@ export async function createIDPhoto({
       }
     }, 'image/png')
   })
+}
+
+export async function createIDPhoto({
+  image,
+  background,
+  adjustment,
+  resolution,
+}: {
+  image: string
+  background: RetouchBackground
+  adjustment: RetouchAdjustment
+  resolution: {
+    width: number
+    height: number
+    dpi?: number
+  }
+}): Promise<Blob | null> {
+  const canvas = await renderIDPhotoCanvas({
+    image,
+    background,
+    adjustment,
+    resolution,
+  })
+  if (!canvas) {
+    return null
+  }
+  const blob = await canvasToPNG(canvas)
+  return resolution.dpi ? withPngDensity(blob, resolution.dpi) : blob
 }

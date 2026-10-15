@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useMeasure } from 'react-use'
 import Box from '@mui/material/Box'
 import { RetouchAdjustment, useCropStore, useRetouchStore } from '../../stores'
-import { createGLFXCanvas, renderGLFXAdjustment } from '../../uitls'
+import { createGLFXCanvas, renderGLFXAdjustment } from '../../utils'
 import fx, { FxCanvasElement, FxTexture } from '../../vendors/glfx'
 
 export interface CanvasImageProps {
@@ -28,6 +28,9 @@ export function CanvasImage({ image }: CanvasImageProps) {
     if (!containerEle || !imgEle) {
       return () => {}
     }
+    // A new image (src change) loads again: drop the previous canvas first.
+    textureRef.current?.destroy()
+    canvasRef.current?.remove()
     const { canvas, texture } = createGLFXCanvas(imgEle)
     canvasRef.current = canvas
     textureRef.current = texture
@@ -41,7 +44,8 @@ export function CanvasImage({ image }: CanvasImageProps) {
     const { current: canvas } = canvasRef
     const { current: imgEle } = imgRef
     if (canvas && imgEle) {
-      canvas
+      // Free the GPU memory of the texture being replaced.
+      textureRef.current?.destroy()
       const texture = canvas.texture(imgEle)
       textureRef.current = texture
       render(useRetouchStore.getState().adjustment)
@@ -69,7 +73,7 @@ export function CanvasImage({ image }: CanvasImageProps) {
     return (
       <Box
         ref={containerRef}
-        className="absolute inset-o w-full h-full"
+        className="absolute inset-0 w-full h-full"
         sx={{
           '& canvas': {
             position: 'absolute',
@@ -86,7 +90,7 @@ export function CanvasImage({ image }: CanvasImageProps) {
 
   return useMemo(
     () => (
-      <Box ref={measureRef} className="absolute inset-o w-full h-full">
+      <Box ref={measureRef} className="absolute inset-0 w-full h-full">
         <img
           ref={imgRef}
           className="block absolute top-0 left-0 w-[200%] h-[200%] scale-50 origin-top-left"
