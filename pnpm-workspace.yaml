@@ -3,3 +3,7 @@ packages:
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
+# Both ship prebuilt binaries; their install scripts only fetch optional extras.
+ignoredBuiltDependencies:
+  - onnxruntime-node
+  - sharp

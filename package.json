@@ -6,10 +6,12 @@
     "dev": "pnpm --filter @idify/web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r --if-present lint",
-    "test": "pnpm -r --if-present test"
+    "test": "pnpm -r --if-present test",
+    "mcp": "node packages/mcp/dist/index.js"
   },
   "dependencies": {
-    "@idify/web": "workspace:*"
+    "@idify/web": "workspace:*",
+    "@idify/mcp": "workspace:*"
   },
   "packageManager": "pnpm@10.34.7",
   "engines": {

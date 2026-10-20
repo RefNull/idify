@@ -25,7 +25,7 @@ jobs:
 
       - name: Typecheck
         run: |
-          for p in common web; do
+          for p in common web mcp; do
             echo "::group::tsc $p"
             (cd packages/$p && npx tsc --noEmit -p .)
             echo "::endgroup::"
@@ -40,3 +40,5 @@ jobs:
       - name: Build web
         run: pnpm --filter @idify/web build
 
+      - name: MCP dist matches src
+        run: pnpm --filter @idify/mcp check:dist
