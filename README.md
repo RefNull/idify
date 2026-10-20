@@ -1,58 +1,65 @@
 # Idify
 
-Idify is a locally run browser-based application for creating ID photos.
+Idify makes ID photos in your browser. Photos never leave your device.
 
-## Download
+This is a fork of [zhbhun/idify](https://github.com/zhbhun/idify).
 
-- [Website](https://idify.netlify.app/)
-- [Android](https://github.com/zhbhun/idify/releases)
+## Features
 
-## Feature
+- Specs for passports, visas and ID cards from most countries
+- Background removal and replacement
+- Brightness, contrast and filter adjustments
+- 4×6" print sheets
+- Works offline as an installable web app
 
-- Privacy-Focused: Ensure user privacy by not uploading file to server, enhancing the security of personal documents.
-- Document Support: Edit various common documents, including ID cards, passports, visas, and more.
-- Free of Charge: Provide all editing functionalities free of cost, making it accessible to a wide range of users.
-- Multi-Platform Compatibility: Access the tool on various platforms, including the web and Android devices.
-- Responsive Web Design: Adapt seamlessly to different screen sizes, offering a responsive web design that caters to both PC and mobile users.
-Cross-Device Functionality:
-- Editing Capabilities: Enable users to edit and enhance document photos with features such as cropping, resizing, adjusting brightness and contrast, and more.
+## What this fork adds
+
+**Better photos**
+
+- The crop frames your head automatically. It finds your face and sizes and positions it to the spec's head-height and eye-line rules.
+- Optional guides show where the top of your head, your chin and your eyes need to be.
+- Background removal leaves clean edges, without a pale halo from the old background.
+- Background removal stays off for countries that don't allow edited backgrounds, such as the UK, Canada and Australia.
+- Print sheets include cut guides and the correct print resolution.
+
+**Easier to use**
+
+- Find a spec by typing: "In" shows India, Indonesia and so on. It also works with country codes and country names in your language.
+- Filter specs by type, and get your recent picks and your country's specs suggested first.
+- The app warns you about filters or backgrounds that a passport office would reject.
+
+**Private by default**
+
+- No analytics, tracking or IP lookup, and no fonts, images or models loaded from other sites.
+- The app's security policy blocks connections to any other site.
+
+**Corrected spec data**
+
+- Head-size and eye-height rules were checked against official sources and fixed where they were wrong.
+
+**MCP server for AI agents** (see below)
+
+The Android app was dropped; the web app can be installed instead.
 
 ## Privacy
 
-Idify does not send your images to a server. All image processing is done locally.
+Everything runs locally. Photos are never uploaded. See [SECURITY.md](SECURITY.md).
 
-However, it utilizes Google Analytics to collect the following:
+## Developing
 
-- [Basic visitor data](https://support.google.com/analytics/answer/6004245).
-- If Idify is a Progressive Web App (PWA), it collects information about the type of Idify installation.
-- If Idify is a Progressive Web App (PWA), it records the installation time and date.
+```shell
+pnpm install
+pnpm dev
+```
 
-# Developing
+## MCP server
 
-To contribute to Idify's development:
+`packages/mcp` lets AI agents look up photo specs, check whether a photo meets a spec, crop it to a spec and make a print sheet. It uses the same face detection and background removal as the web app, runs on macOS, Linux and Windows, and works offline.
 
-1. Clone the repository.
-2. To install the required node packages, run:
+Build it with `pnpm build` and point your MCP client at `packages/mcp/dist/index.js`. Set `IDIFY_MCP_ROOT` to the folder it may read and write; it can't touch anything outside it.
 
-   ```shell
-   pnpm install
-   ```
-
-3. Start the development server by running:
-
-   ```shell
-   npm run dev
-   ```
-
-## Roadmap
- 
-- [ ] Add feature descriptions to the homepage.
-- [x] Include common ID photo dimensions for various countries.
-- [x] Support fine-tuning of image details like brightness and contrast.
-- [ ] Support adding filters like black and white to images.
-- [ ] Support for internationalization or localization.
-- [ ] ID photo management 
+On Apple Silicon Macs, `pnpm --filter @idify/mcp build:native` adds an optional Apple Vision engine that also checks head pitch and photo quality.
 
 ## License
 
-This software is free to use under the GPL License.
+GPL-3.0
