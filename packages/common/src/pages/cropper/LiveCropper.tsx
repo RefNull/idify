@@ -1,15 +1,37 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useMeasure } from 'react-use'
-import EaseCropper, { Area } from 'react-easy-crop'
+import EaseCropper, {
+  Area,
+  MediaSize,
+  getInitialCropFromCroppedAreaPixels,
+} from 'react-easy-crop'
 import Box from '@mui/material/Box'
 import { CROPPER_ZOOM_MAX, CROPPER_ZOOM_MIN } from '../../config'
 import { useAdaptedSize } from '../../hooks'
-import { useCropStore, useSegementStore, useSelectedSpec } from '../../stores'
+import {
+  useCropStore,
+  useRetouchStore,
+  useSegementStore,
+  useSelectedSpec,
+} from '../../stores'
+import { ConfigContext } from '../../components'
+import {
+  DetectedFace,
+  MaskData,
+  createHeadGuideSVG,
+  detectFace,
+  getAutoCropArea,
+  getHeadBox,
+  loadMask,
+} from '../../utils'
 
 export function LiveCropper() {
   const [measureRef, measureRect] = useMeasure<HTMLDivElement>()
   const [spec] = useSelectedSpec()
   const image = useCropStore((state) => state.image)
+  const useOriginalBackground = useCropStore(
+    (state) => state.useOriginalBackground
+  )
   const segmentedImage = useSegementStore((state) => state.result)
   const limit = useMemo(
     () => ({
@@ -36,39 +58,92 @@ export function LiveCropper() {
     },
     [setCroppedArea]
   )
-  const maskImage = useMemo(() => {
-    if (spec.rules) {
-      const {
-        maxHeadHeight = 0,
-        minHeadHeight = 0,
-        minHeadOffset = 0,
-      } = spec.rules
-      if (maxHeadHeight > 0 && minHeadOffset > 0) {
-        const height = maxHeadHeight * cropSize.height
-        const offset = minHeadOffset * cropSize.height
-        const innerHeight = minHeadHeight * cropSize.height
-        const innsetOffset = offset + (height - innerHeight) / 2
-        return `data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${
-          cropSize.width
-        } ${cropSize.height}"><ellipse cx="${cropSize.width / 2}" cy="${
-          offset + height / 2
-        }" rx="${(height * (3 / 4)) / 2}" ry="${
-          height / 2
-        }" fill="black" fill-opacity="0.01" stroke="white" stroke-width="1" stroke-opacity="0.6"></ellipse>${
-          innerHeight > 0
-            ? `<ellipse cx="${cropSize.width / 2}" cy="${
-                innsetOffset + innerHeight / 2
-              }" rx="${(innerHeight * (3 / 4)) / 2}" ry="${
-                innerHeight / 2
-              }" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.4"></ellipse>`
-            : ''
-        }<path style="fill:none;stroke:white;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.25,0.5;stroke-dashoffset:0;stroke-opacity:0.8" d="m ${
-          cropSize.width / 2
-        },0 v ${cropSize.height} 0"></path></svg>`
-      }
+  // Frame the head automatically: as soon as the face is found, and again
+  // when the background-removal mask refines the crown or the spec changes,
+  // until the user adjusts the crop by hand.
+  const config = useContext(ConfigContext)
+  const publicPath = config.segment?.publicPath
+  const [mediaSize, setMediaSize] = useState<MediaSize | null>(null)
+  const [face, setFace] = useState<{ url: string; box: DetectedFace } | null>(
+    null
+  )
+  const [mask, setMask] = useState<{ url: string; data: MaskData } | null>(null)
+  useEffect(() => {
+    if (!image) {
+      return
     }
-    return ''
-  }, [spec, cropSize])
+    let cancelled = false
+    detectFace(image, publicPath)
+      .then((box) => {
+        if (!cancelled && box) {
+          setFace({ url: image, box })
+        }
+      })
+      .catch(() => {
+        // No framing; the crop simply stays where it is.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [image, publicPath])
+  useEffect(() => {
+    if (!segmentedImage) {
+      return
+    }
+    let cancelled = false
+    loadMask(segmentedImage)
+      .then((data) => {
+        if (!cancelled && data) {
+          setMask({ url: segmentedImage, data })
+        }
+      })
+      .catch(() => {
+        // Keep the crown estimated from the face.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [segmentedImage])
+  useEffect(() => {
+    if (!face || face.url !== image || !mediaSize) {
+      return
+    }
+    const { touched, rotation } = useCropStore.getState()
+    if (touched) {
+      return
+    }
+    // Only a mask of this same photo can refine the crown.
+    const segment = useSegementStore.getState()
+    const ownMask =
+      mask && segment.image === image && mask.url === segment.result
+        ? mask.data
+        : null
+    const area = getAutoCropArea(getHeadBox(face.box, ownMask), spec, {
+      width: mediaSize.naturalWidth,
+      height: mediaSize.naturalHeight,
+    })
+    const { crop, zoom } = getInitialCropFromCroppedAreaPixels(
+      area,
+      mediaSize,
+      rotation,
+      cropSize,
+      CROPPER_ZOOM_MIN,
+      CROPPER_ZOOM_MAX
+    )
+    useCropStore.getState().autoFrame(crop, zoom)
+  }, [face, mask, image, mediaSize, spec, cropSize])
+  const touch = useCropStore((state) => state.touch)
+
+  const guides = useRetouchStore((state) => state.guides)
+  const maskImage = useMemo(
+    () => (guides ? createHeadGuideSVG(spec, cropSize) : ''),
+    [guides, spec, cropSize]
+  )
+  const displayImage =
+    spec?.prohibitBackgroundRemoval || useOriginalBackground
+      ? image
+      : segmentedImage || image
+
   return (
     <Box
       ref={measureRef}
@@ -89,7 +164,7 @@ export function LiveCropper() {
             backgroundSize: '100% 100%',
           },
         }}
-        image={segmentedImage || image}
+        image={displayImage}
         aspect={spec.dimension.width / spec.dimension.height}
         crop={position}
         cropSize={cropSize}
@@ -108,6 +183,8 @@ export function LiveCropper() {
         ].join(' ')}
         onCropChange={setPosition}
         onCropComplete={onCropComplete}
+        onMediaLoaded={setMediaSize}
+        onInteractionStart={touch}
         onRotationChange={setRotation}
         onZoomChange={setZoom}
       />

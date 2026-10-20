@@ -1,16 +1,27 @@
+import { useMemo } from 'react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { ID_PHOTO_SPECS, ID_PHOTO_GENERIC_SPECS } from '../config'
+import { IDPhotoSpec } from '../types'
+import { getRegion } from '../utils/intl'
 import {
-  ID_PHOTO_SPECS,
-  ID_PHOTO_GENERIC_SPECS,
-  ID_PHOTO_GOUPS,
-} from '../config'
-import { IDPhotoGroup, IDPhotoSpec } from '../types'
-import { getRegion } from '../uitls/intl'
+  PersistedSpecState,
+  SPEC_STORE_VERSION,
+  buildSpecGroups,
+  getNextCustomName,
+  migrateSpecState,
+  pushRecent,
+  resolveSpec,
+} from './specState'
+
+export * from './specState'
 
 export interface SpecState {
   customs: IDPhotoSpec[]
-  groups: IDPhotoGroup[]
+  /** Specs for the user's region. Rebuilt at runtime, never persisted. */
+  localeSpecs: IDPhotoSpec[]
+  /** Recently picked spec names, newest first. */
+  recent: string[]
   spec: string
 }
 
@@ -25,117 +36,104 @@ export interface SpecAction {
 
 export interface SpecStore extends SpecState, SpecAction {}
 
-export const defaultSpecState = {
+export const defaultSpecState: SpecState = {
   spec: ID_PHOTO_GENERIC_SPECS[0].name,
-  groups: ID_PHOTO_GOUPS,
+  localeSpecs: [],
+  recent: [],
   customs: [],
 }
 
 export const useSpecStore = create(
-  persist<SpecStore>(
+  persist<SpecStore, [], [], PersistedSpecState>(
     (set, get) => ({
       ...defaultSpecState,
       async initiate() {
-        const region = await getRegion()
-        if (region) {
-          const localeSpecs = ID_PHOTO_SPECS.filter(
-            (spec) => spec.zone === region
-          )
-          if (localeSpecs.length > 0) {
-            set({
-              groups: [
-                {
-                  name: 'locale',
-                  title: 'Locale',
-                  specs: localeSpecs,
-                },
-                ...ID_PHOTO_GOUPS,
-              ],
-              spec: localeSpecs[0].name,
-            })
-          }
+        let region = ''
+        try {
+          region = await getRegion()
+        } catch (error) {
+          // No region: the picker simply has no locale suggestions.
         }
+        if (!region) {
+          return
+        }
+        const localeSpecs = ID_PHOTO_SPECS.filter(
+          (spec) => spec.zone === region
+        )
+        if (localeSpecs.length === 0) {
+          return
+        }
+        const { spec, recent } = get()
+        // Only preselect a local spec until the user has picked one.
+        const untouched = recent.length === 0 && spec === defaultSpecState.spec
+        set({
+          localeSpecs,
+          ...(untouched ? { spec: localeSpecs[0].name } : {}),
+        })
       },
       setSpec(spec) {
-        set({ spec })
+        set({ spec, recent: pushRecent(get().recent, spec) })
       },
       addCustom(spec) {
         set((prevState) => ({
-          ...prevState,
           customs: [spec, ...prevState.customs],
         }))
       },
       updateCustom(spec: IDPhotoSpec): void {
-        set((prevState) => {
-          return {
-            ...prevState,
-            customs: prevState.customs.map((item) => {
-              if (item.name === spec.name) {
-                return {
-                  ...item,
-                  ...spec,
-                }
-              }
-              return item
-            }),
-          }
-        })
+        set((prevState) => ({
+          customs: prevState.customs.map((item) =>
+            item.name === spec.name ? { ...item, ...spec } : item
+          ),
+        }))
       },
       removeCustom(spec) {
-        set((prevState) => {
-          const customs = prevState.customs.slice()
-          const index = customs.indexOf(spec)
-          if (index >= 0) {
-            customs.splice(index, 1)
-          }
-          return {
-            ...prevState,
-            customs,
-          }
-        })
+        set((prevState) => ({
+          customs: prevState.customs.filter((item) => item.name !== spec.name),
+          recent: prevState.recent.filter((item) => item !== spec.name),
+        }))
       },
       getNextName() {
-        const { customs } = get()
-        let maxId = 0
-        for (let index = 0; index < customs.length; index++) {
-          const id = Number(customs[index].name.split('_')[1])
-          if (id > maxId) {
-            maxId = id
-          }
-        }
-        return `custom_${maxId}`
+        return getNextCustomName(get().customs)
       },
     }),
     {
       name: 'idify_spec',
+      version: SPEC_STORE_VERSION,
+      migrate: migrateSpecState,
+      partialize: (state) => ({
+        spec: state.spec,
+        customs: state.customs,
+        recent: state.recent,
+      }),
     }
   )
 )
 
 export function useSpecGroups() {
-  return useSpecStore((state) => state.groups)
-}
-
-export function getSelectedSpec() {
-  const { customs, groups, spec: selected } = useSpecStore.getState()
-  return (
-    ID_PHOTO_SPECS.filter((item) => item.name === selected)[0] ||
-    customs.find((item) => item.name === selected) ||
-    groups[0].specs[0]
+  const localeSpecs = useSpecStore((state) => state.localeSpecs)
+  const customs = useSpecStore((state) => state.customs)
+  return useMemo(
+    () => buildSpecGroups(localeSpecs, customs),
+    [localeSpecs, customs]
   )
 }
 
+export function getSelectedSpec() {
+  const { customs, localeSpecs, spec } = useSpecStore.getState()
+  return resolveSpec(spec, customs, localeSpecs)
+}
+
 export function useSelectedSpec() {
-  const [customs, groups, selected, setSpec] = useSpecStore((state) => [
-    state.customs,
-    state.groups,
-    state.spec,
-    state.setSpec,
-  ])
+  const customs = useSpecStore((state) => state.customs)
+  const localeSpecs = useSpecStore((state) => state.localeSpecs)
+  const selected = useSpecStore((state) => state.spec)
+  const setSpec = useSpecStore((state) => state.setSpec)
+  const spec = useMemo(
+    () => resolveSpec(selected, customs, localeSpecs),
+    [selected, customs, localeSpecs]
+  )
   return [
-    ID_PHOTO_SPECS.find((item) => item.name === selected) ||
-      customs.find((item) => item.name === selected) ||
-      groups[0].specs[0],
+    spec,
     (newSpec: IDPhotoSpec) => {
       setSpec(newSpec.name)
     },

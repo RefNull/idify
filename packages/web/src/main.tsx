@@ -7,6 +7,7 @@ import {
   createTheme,
 } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
+import '@fontsource/pacifico'
 import './main.scss'
 import App from './App.tsx'
 

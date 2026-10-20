@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import { useRetouchStore } from '../../stores'
-import { drawCanvasBackground } from '../../uitls'
+import { drawCanvasBackground } from '../../utils'
 
 export interface BackgroundColorProps {
   width: number

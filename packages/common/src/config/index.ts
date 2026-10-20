@@ -147,11 +147,19 @@ export const ID_PHOTO_STUDENT_SPECS = ID_PHOTO_SPECS.filter(
   (spec) => spec.type === 'student'
 )
 
-export const ID_PHOTO_GOUPS = [
+export const ID_PHOTO_OTHER_SPECS = ID_PHOTO_SPECS.filter(
+  (spec) => spec.type === 'others'
+)
+
+/**
+ * Every built-in spec type, in picker order. `custom` is not listed because
+ * custom specs live in the store, not in spec.json.
+ */
+export const ID_PHOTO_GROUPS: IDPhotoGroup[] = [
   {
-    name: 'generic',
-    title: 'Generic',
-    specs: ID_PHOTO_GENERIC_SPECS,
+    name: 'passport',
+    title: 'Passport',
+    specs: ID_PHOTO_PASSPORT_SPECS,
   },
   {
     name: 'visa',
@@ -164,8 +172,37 @@ export const ID_PHOTO_GOUPS = [
     specs: ID_PHOTO_IDENTIFICATION_SPECS,
   },
   {
-    name: 'passport',
-    title: 'Passport',
-    specs: ID_PHOTO_PASSPORT_SPECS,
+    name: 'driving',
+    title: 'Driving',
+    specs: ID_PHOTO_DRIVING_SPECS,
   },
-] as IDPhotoGroup[]
+  {
+    name: 'student',
+    title: 'Student',
+    specs: ID_PHOTO_STUDENT_SPECS,
+  },
+  {
+    name: 'generic',
+    title: 'Generic',
+    specs: ID_PHOTO_GENERIC_SPECS,
+  },
+  {
+    name: 'others',
+    title: 'Other',
+    specs: ID_PHOTO_OTHER_SPECS,
+  },
+]
+
+/** @deprecated misspelled alias of {@link ID_PHOTO_GROUPS}. */
+export const ID_PHOTO_GOUPS = ID_PHOTO_GROUPS
+
+/** Limits for user-defined (custom) specs, in pixels and dots per inch. */
+export const CUSTOM_SPEC_LIMITS = {
+  minSize: 1,
+  maxSize: 10000,
+  minDpi: 72,
+  maxDpi: 1200,
+} as const
+
+/** The physical unit every custom spec is displayed in. */
+export const CUSTOM_SPEC_UNIT = 'mm' as const

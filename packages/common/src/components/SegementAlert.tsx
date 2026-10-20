@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Fade from '@mui/material/Fade'
+import { useIntl } from 'react-intl'
 import { TransitionProps } from '@mui/material/transitions'
 
 const ALERTED_CACHE = 'idify.sgement.alert'
@@ -20,6 +21,7 @@ const Transition = forwardRef(function Transition(
 })
 
 export function SegementAlert() {
+  const intl = useIntl()
   const [open, setOpen] = useState(false)
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined
@@ -44,14 +46,19 @@ export function SegementAlert() {
   }, [])
   return (
     <Dialog open={open} TransitionComponent={Transition} onClose={handleClose}>
-      <DialogTitle>Removing photo backgound</DialogTitle>
+      <DialogTitle>
+        {intl.formatMessage({
+          id: 'segmentAlertTitle',
+          defaultMessage: 'Removing the photo background',
+        })}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Idify will remove the image background in the background, and the
-          progress will be displayed in the upper right corner. This process may
-          take a little time, so please be patient. Before proceeding, you can
-          select the photo size and crop it. We can move on to the next step
-          once the process is complete.
+          {intl.formatMessage({
+            id: 'segmentAlertText',
+            defaultMessage:
+              'Idify removes the background on your device while you work. Progress is shown in the top-right corner, and it may take a little while. Meanwhile you can choose the photo size and crop the photo; you can continue to the next step once it has finished.',
+          })}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -61,10 +68,13 @@ export function SegementAlert() {
             localStorage.setItem(ALERTED_CACHE, '1')
           }}
         >
-          Don't show agin
+          {intl.formatMessage({
+            id: 'dontShowAgain',
+            defaultMessage: "Don't show again",
+          })}
         </Button>
         <Button onClick={handleClose} autoFocus>
-          Ok
+          {intl.formatMessage({ id: 'ok', defaultMessage: 'OK' })}
         </Button>
       </DialogActions>
     </Dialog>

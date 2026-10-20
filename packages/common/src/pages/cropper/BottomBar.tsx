@@ -4,13 +4,19 @@ import AspectRatioIcon from '@mui/icons-material/AspectRatio'
 import CropRotateIcon from '@mui/icons-material/CropRotate'
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap'
 import FlipIcon from '@mui/icons-material/Flip'
+import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import { RangePicker } from '../../components'
 import { CROPPER_ZOOM_MAX, CROPPER_ZOOM_MIN } from '../../config'
-import { useCropStore, useSelectedSpec, useSpecStore } from '../../stores'
+import {
+  useCropStore,
+  useRetouchStore,
+  useSelectedSpec,
+  useSpecStore,
+} from '../../stores'
 import SpecPicker from './SpecPicker'
 
 type ActiveType = '' | 'spec' | 'zoom' | 'rotate' | 'flip'
@@ -27,6 +33,8 @@ export function BottomBar() {
     setFlipHorizontal,
     setFlipVertical,
   } = useCropStore()
+  const guides = useRetouchStore((state) => state.guides)
+  const toggleGuides = useRetouchStore((state) => state.toggleGuides)
   return (
     <Paper
       className="relative flex flex-col grow-0 shrink-0 rounded-t-2xl sm:mx-auto sm:w-[400px]"
@@ -145,6 +153,21 @@ export function BottomBar() {
           <Stack direction="column" alignItems="center" spacing={0.5}>
             <FlipIcon fontSize="small" />
             <span>{intl.formatMessage({ id: 'flip' })}</span>
+          </Stack>
+        </Button>
+        <Button
+          size="small"
+          color={guides ? 'primary' : 'inherit'}
+          onClick={toggleGuides}
+        >
+          <Stack direction="column" alignItems="center" spacing={0.5}>
+            <StraightenOutlinedIcon fontSize="small" />
+            <span>
+              {intl.formatMessage({
+                id: 'guides',
+                defaultMessage: 'Guides',
+              })}
+            </span>
           </Stack>
         </Button>
       </Stack>
