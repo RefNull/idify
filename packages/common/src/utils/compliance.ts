@@ -46,3 +46,34 @@ export function getFileSizeExcess(
   }
   return { actualKB: Math.ceil(bytes / 1024), maxKB }
 }
+
+/**
+ * Encode at the highest quality whose output is at most `maxBytes`, by
+ * binary search over `minQuality..maxQuality`. `encode` turns a quality
+ * (0..1) into a file. If even `minQuality` is too large, that smallest file
+ * is returned and the caller can still warn about it.
+ */
+export async function encodeWithinSize(
+  encode: (quality: number) => Promise<Blob>,
+  maxBytes: number,
+  { minQuality = 0.5, maxQuality = 0.95, steps = 6 } = {}
+): Promise<Blob> {
+  const best = await encode(maxQuality)
+  if (best.size <= maxBytes) {
+    return best
+  }
+  let lo = minQuality
+  let hi = maxQuality
+  let fit: Blob | null = null
+  for (let i = 0; i < steps; i++) {
+    const quality = (lo + hi) / 2
+    const blob = await encode(quality)
+    if (blob.size <= maxBytes) {
+      fit = blob
+      lo = quality
+    } else {
+      hi = quality
+    }
+  }
+  return fit ?? (await encode(minQuality))
+}

@@ -6,6 +6,7 @@ import {
   renderGLFXAdjustment,
 } from './canvas'
 import { withPngDensity } from './png'
+import { encodeWithinSize } from './compliance'
 import { CropArea, getCropOutputSize, getCropTransform } from './crop'
 
 export type { IDPhotoDimension }
@@ -207,23 +208,37 @@ export async function renderIDPhotoCanvas({
   return canvas
 }
 
-function canvasToPNG(canvas: HTMLCanvasElement): Promise<Blob> {
+function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  type = 'image/png',
+  quality?: number
+): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((file) => {
-      if (file) {
-        resolve(file)
-      } else {
-        reject(new Error('failed'))
-      }
-    }, 'image/png')
+    canvas.toBlob(
+      (file) => {
+        if (file) {
+          resolve(file)
+        } else {
+          reject(new Error('failed'))
+        }
+      },
+      type,
+      quality
+    )
   })
 }
 
+/**
+ * Render the finished ID photo. With `maxKB` (a spec's upload limit) it is a
+ * JPEG at the highest quality that fits, as online submissions expect;
+ * otherwise a PNG carrying the print density.
+ */
 export async function createIDPhoto({
   image,
   background,
   adjustment,
   resolution,
+  maxKB,
 }: {
   image: string
   background: RetouchBackground
@@ -233,6 +248,7 @@ export async function createIDPhoto({
     height: number
     dpi?: number
   }
+  maxKB?: number
 }): Promise<Blob | null> {
   const canvas = await renderIDPhotoCanvas({
     image,
@@ -243,6 +259,23 @@ export async function createIDPhoto({
   if (!canvas) {
     return null
   }
-  const blob = await canvasToPNG(canvas)
+  if (maxKB && maxKB > 0) {
+    // JPEG has no transparency: put a transparent background on white.
+    const flat = document.createElement('canvas')
+    flat.width = canvas.width
+    flat.height = canvas.height
+    const ctx = flat.getContext('2d')
+    if (!ctx) {
+      return null
+    }
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, flat.width, flat.height)
+    ctx.drawImage(canvas, 0, 0)
+    return encodeWithinSize(
+      (quality) => canvasToBlob(flat, 'image/jpeg', quality),
+      maxKB * 1024
+    )
+  }
+  const blob = await canvasToBlob(canvas)
   return resolution.dpi ? withPngDensity(blob, resolution.dpi) : blob
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  encodeWithinSize,
   getFileSizeExcess,
   hasGradientBackground,
   isNonNeutralAdjustment,
@@ -59,5 +60,27 @@ describe('getFileSizeExcess', () => {
       }
     )
     expect(getFileSizeExcess(10, undefined)).toBeNull()
+  })
+})
+
+describe('encodeWithinSize', () => {
+  // A fake encoder whose output grows with quality: 1000 bytes per 0.01.
+  const encode = async (quality: number) =>
+    new Blob([new Uint8Array(Math.round(quality * 100_000))])
+
+  it('keeps the top quality when it already fits', async () => {
+    const blob = await encodeWithinSize(encode, 200_000)
+    expect(blob.size).toBe(95_000)
+  })
+
+  it('finds the highest quality under the limit', async () => {
+    const blob = await encodeWithinSize(encode, 70_000)
+    expect(blob.size).toBeLessThanOrEqual(70_000)
+    expect(blob.size).toBeGreaterThan(65_000)
+  })
+
+  it('returns the smallest file when nothing fits', async () => {
+    const blob = await encodeWithinSize(encode, 10_000)
+    expect(blob.size).toBe(50_000)
   })
 })

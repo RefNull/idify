@@ -61,16 +61,21 @@ export default function ImageRetouch(props: ImageRetouchProps) {
         background,
         adjustment,
         resolution: spec.dimension,
+        // Specs with an upload limit are saved as a JPEG that fits it.
+        maxKB: spec.rules?.size,
       })
       if (!idPhoto) {
         return
       }
-      // Warn (don't block) when the PNG exceeds the authority's file limit.
+      // Warn (don't block) if even the lowest quality is over the limit.
       const excess = getFileSizeExcess(idPhoto.size, spec)
       if (config.savePhoto) {
         await config.savePhoto(idPhoto)
       } else {
-        downloadBlob(idPhoto, 'idphoto.png')
+        downloadBlob(
+          idPhoto,
+          idPhoto.type === 'image/jpeg' ? 'idphoto.jpg' : 'idphoto.png'
+        )
       }
       enqueueSnackbar(
         intl.formatMessage({ id: 'saveSucceeded', defaultMessage: 'Saved.' }),
