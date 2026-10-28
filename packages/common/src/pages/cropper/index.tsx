@@ -22,7 +22,7 @@ import {
   useSegementStore,
   useSelectedSpec,
 } from '../../stores'
-import { cropIDPhoto } from '../../utils'
+import { cropIDPhoto, cropMatchingOriginal } from '../../utils'
 import {
   CloseButton,
   ConfigContext,
@@ -121,10 +121,15 @@ export default function Cropper() {
           image: sourceImage,
         })
         // The same crop of the original lets retouching blend some of the
-        // original background back in.
+        // original background back in. The area was measured on the cutout,
+        // which may not share the original's resolution.
         const original = useOriginal
           ? undefined
-          : await cropIDPhoto({ ...cropOptions, image })
+          : await cropMatchingOriginal({
+              ...cropOptions,
+              image,
+              cutout: result,
+            })
         useAppStore.getState().retouch(idPhoto, original)
       } catch (error) {
         enqueueSnackbar(

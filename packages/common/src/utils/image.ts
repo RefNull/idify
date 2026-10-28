@@ -27,6 +27,7 @@ export async function cropIDPhoto({
   flipHorizontal = false,
   flipVertical = false,
   resolution,
+  sourceSize,
 }: {
   image: string
   area: CropArea
@@ -37,11 +38,21 @@ export async function cropIDPhoto({
     width: number
     height: number
   }
+  /**
+   * Treat the image as if it were this size: for cropping one image with an
+   * area measured on another of the same shape but a different resolution.
+   */
+  sourceSize?: {
+    width: number
+    height: number
+  }
 }): Promise<string> {
   if (!(area.width > 0) || !(area.height > 0)) {
     throw new Error('Empty crop area')
   }
   const image = await loadImage(imageURL)
+  const imageWidth = sourceSize?.width || image.naturalWidth || image.width
+  const imageHeight = sourceSize?.height || image.naturalHeight || image.height
   // Supersample for the retouch step, but keep the canvas within the limits
   // mobile browsers can allocate.
   const output = getCropOutputSize(resolution)
@@ -57,8 +68,8 @@ export async function cropIDPhoto({
   // One transform straight from the source: no full-size rotated intermediate.
   ctx.setTransform(
     ...getCropTransform({
-      imageWidth: image.naturalWidth || image.width,
-      imageHeight: image.naturalHeight || image.height,
+      imageWidth,
+      imageHeight,
       rotation,
       flipHorizontal,
       flipVertical,
@@ -67,7 +78,7 @@ export async function cropIDPhoto({
       outputHeight: output.height,
     })
   )
-  ctx.drawImage(image, 0, 0)
+  ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
       // Release the backing store early; large canvases add up on iOS.
@@ -80,6 +91,39 @@ export async function cropIDPhoto({
       }
     }, 'image/png')
   })
+}
+
+/**
+ * Crop the original photo to match a crop of its cutout, whose area was
+ * measured on the cutout. Background removal may return a different
+ * resolution, so the original is scaled to the cutout's size first. Returns
+ * undefined when the two do not have the same shape (e.g. one was rotated
+ * by its EXIF orientation and the other not), as they cannot be lined up.
+ */
+export async function cropMatchingOriginal({
+  image: originalURL,
+  cutout: cutoutURL,
+  ...options
+}: Omit<Parameters<typeof cropIDPhoto>[0], 'sourceSize'> & {
+  cutout: string
+}): Promise<string | undefined> {
+  const [original, cutout] = await Promise.all([
+    loadImage(originalURL),
+    loadImage(cutoutURL),
+  ])
+  const sourceSize = {
+    width: cutout.naturalWidth || cutout.width,
+    height: cutout.naturalHeight || cutout.height,
+  }
+  const originalAspect =
+    (original.naturalWidth || original.width) /
+    (original.naturalHeight || original.height)
+  if (
+    Math.abs(sourceSize.width / sourceSize.height / originalAspect - 1) > 0.01
+  ) {
+    return undefined
+  }
+  return cropIDPhoto({ ...options, image: originalURL, sourceSize })
 }
 
 /**
