@@ -393,6 +393,9 @@ function getPlacementRules(spec) {
     minHeadHeight = 0,
     maxHeadHeight = 0,
     minHeadOffset = 0,
+    maxHeadOffset = 0,
+    minChinOffset = 0,
+    maxChinOffset = 0,
     minEyeHeight = 0,
     maxEyeHeight = 0
   } = spec.rules ?? {};
@@ -401,6 +404,9 @@ function getPlacementRules(spec) {
     minHead: positive(minHeadHeight),
     maxHead: positive(maxHeadHeight),
     crownOffset: positive(minHeadOffset),
+    maxCrownOffset: positive(maxHeadOffset),
+    minChin: positive(minChinOffset),
+    maxChin: positive(maxChinOffset),
     minEye: positive(minEyeHeight),
     maxEye: positive(maxEyeHeight)
   };
@@ -420,15 +426,20 @@ function getHeadRatioRange(rules) {
   return { target, max };
 }
 function solveCrown(rules, headRatio, eyeInHead = EYE_IN_HEAD) {
-  const { crownOffset, minEye, maxEye } = rules;
+  const { crownOffset, maxCrownOffset, minChin, maxChin, minEye, maxEye } = rules;
   const eyeDrop = eyeInHead * headRatio;
   let lo = crownOffset;
   let hi = 1 - headRatio;
+  if (maxCrownOffset > 0) hi = Math.min(hi, maxCrownOffset);
+  if (minChin > 0) hi = Math.min(hi, 1 - minChin - headRatio);
+  if (maxChin > 0) lo = Math.max(lo, 1 - maxChin - headRatio);
   if (minEye > 0) hi = Math.min(hi, 1 - minEye - eyeDrop);
   if (maxEye > 0) lo = Math.max(lo, 1 - maxEye - eyeDrop);
   let crown;
   if (minEye > 0 && maxEye > 0) {
     crown = 1 - (minEye + maxEye) / 2 - eyeDrop;
+  } else if (crownOffset > 0 && maxCrownOffset > 0) {
+    crown = (crownOffset + maxCrownOffset) / 2;
   } else if (crownOffset > 0) {
     crown = crownOffset;
   } else {

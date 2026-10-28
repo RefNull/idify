@@ -29,6 +29,14 @@ export interface IDPhotoSpec {
     minHeadHeight?: number
     /** Clear space required above the crown, measured from the top edge. */
     minHeadOffset?: number
+    /** Largest clear space allowed above the crown. */
+    maxHeadOffset?: number
+    /** Clear space required below the chin, measured from the bottom edge. */
+    minChinOffset?: number
+    /** Largest clear space allowed below the chin. */
+    maxChinOffset?: number
+    /** How far the face's centre line may stray from the photo's centre line. */
+    maxCenterOffset?: number
     /** Largest chin-to-crown head height. */
     maxHeadHeight?: number
     /** Eye line distance from the BOTTOM edge, lower bound (min ≤ max). */
