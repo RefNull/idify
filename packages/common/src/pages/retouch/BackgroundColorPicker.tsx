@@ -1,15 +1,24 @@
 import chroma from 'chroma-js'
 import { useCallback, useEffect, useState } from 'react'
+import { useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import Input from '@mui/material/Input'
 import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
+import { RangePicker } from '../../components'
 import { BACKGROUND_COLORS } from '../../config'
 import { useRetouchStore } from '../../stores'
 
 export function BackgroundColorPicker() {
+  const intl = useIntl()
   const [background, setBackground] = useRetouchStore((state) => [
     state.background,
     state.setBackground,
+  ])
+  const [original, removal, setRemoval] = useRetouchStore((state) => [
+    state.original,
+    state.removal,
+    state.setRemoval,
   ])
   const { color } = background
   const setColor = useCallback(
@@ -27,6 +36,34 @@ export function BackgroundColorPicker() {
   }, [color])
   return (
     <Box className="p-[16px] pb-[24px]">
+      {original ? (
+        <Box className="mb-4">
+          <Typography variant="caption" component="div">
+            {intl.formatMessage({
+              id: 'backgroundRemoval',
+              defaultMessage: 'Background removal',
+            })}
+          </Typography>
+          <RangePicker
+            value={removal}
+            min={0}
+            max={1}
+            precision={0.01}
+            step={0.01}
+            segment={5}
+            unit="%"
+            format={(value) => Math.round(value * 100)}
+            onChange={setRemoval}
+          />
+          <Typography variant="caption" component="div" sx={{ opacity: 0.7 }}>
+            {intl.formatMessage({
+              id: 'backgroundRemovalHint',
+              defaultMessage:
+                'Below 100% some of the original background shows through, which looks less processed. Authorities may still count it as an edited photo.',
+            })}
+          </Typography>
+        </Box>
+      ) : null}
       <Input
         className="mb-4"
         required

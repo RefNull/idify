@@ -28,6 +28,8 @@
   "printSheet": "4x6-Zoll-Bogen",
   "printSheetSaved": "4x6-Bogen: {count} x {title} ({size}), {columns}x{rows} bei {dpi} DPI.",
   "guides": "Hilfslinien",
+  "backgroundRemoval": "Hintergrundentfernung",
+  "backgroundRemovalHint": "Unter 100 % scheint etwas vom ursprünglichen Hintergrund durch, das wirkt weniger bearbeitet. Behörden können es trotzdem als bearbeitetes Foto werten.",
   "filter": "Filter",
   "filterOriginal": "Original",
   "filterGrayscale": "S/W",

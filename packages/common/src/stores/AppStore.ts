@@ -14,7 +14,8 @@ export interface AppState {
 export interface AppActions {
   initiate(): void;
   crop(image: string): void
-  retouch(image: string): void
+  /** `original`: the same crop of the unedited photo, when `image` is a cutout. */
+  retouch(image: string, original?: string): void
   cancel(): void
   reset(): void
 }
@@ -34,8 +35,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
     useCropStore.getState().setImage(image)
     set({ step: 1 })
   },
-  retouch(image: string) {
-    useRetouchStore.getState().setImage(image)
+  retouch(image: string, original?: string) {
+    useRetouchStore.getState().setImage(image, original)
     set({ step: 2 })
   },
   cancel() {

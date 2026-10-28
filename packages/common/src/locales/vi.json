@@ -28,6 +28,8 @@
   "printSheet": "trang 4x6 inch",
   "printSheetSaved": "Trang 4x6: {count} x {title} ({size}), {columns}x{rows} ở {dpi} DPI.",
   "guides": "đường gióng",
+  "backgroundRemoval": "Xóa phông nền",
+  "backgroundRemovalHint": "Dưới 100%, một phần phông nền gốc sẽ hiện ra, trông ít qua xử lý hơn. Cơ quan chức năng vẫn có thể coi đây là ảnh đã chỉnh sửa.",
   "filter": "bộ lọc",
   "filterOriginal": "gốc",
   "filterGrayscale": "đen trắng",

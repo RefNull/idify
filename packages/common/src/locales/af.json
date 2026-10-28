@@ -29,6 +29,8 @@
   "printSheet": "4x6-duim-vel",
   "printSheetSaved": "4x6-vel: {count} x {title} ({size}), {columns}x{rows} teen {dpi} DPI.",
   "guides": "Riglyne",
+  "backgroundRemoval": "Agtergrondverwydering",
+  "backgroundRemovalHint": "Onder 100% skyn van die oorspronklike agtergrond deur, wat minder verwerk lyk. Owerhede kan dit steeds as 'n geredigeerde foto beskou.",
   "filter": "Filter",
   "filterOriginal": "Oorspronklik",
   "filterGrayscale": "S&W",

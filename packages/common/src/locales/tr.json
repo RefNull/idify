@@ -28,6 +28,8 @@
   "printSheet": "4x6 inç sayfa",
   "printSheetSaved": "4x6 sayfa: {count} x {title} ({size}), {columns}x{rows}, {dpi} DPI.",
   "guides": "Kılavuzlar",
+  "backgroundRemoval": "Arka plan kaldırma",
+  "backgroundRemovalHint": "%100'ün altında orijinal arka planın bir kısmı görünür ve fotoğraf daha az işlenmiş görünür. Yetkililer yine de bunu düzenlenmiş fotoğraf sayabilir.",
   "filter": "Filtre",
   "filterOriginal": "Orijinal",
   "filterGrayscale": "S/B",

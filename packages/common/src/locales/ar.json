@@ -28,6 +28,8 @@
   "printSheet": "ورقة 4x6 بوصة",
   "printSheetSaved": "ورقة 4x6: {count} × {title} ({size})، {columns}x{rows} بدقة {dpi} DPI.",
   "guides": "خطوط إرشادية",
+  "backgroundRemoval": "إزالة الخلفية",
+  "backgroundRemovalHint": "أقل من 100% يظهر جزء من الخلفية الأصلية، فتبدو الصورة أقل معالجة. قد تعتبرها الجهات الرسمية صورة معدّلة مع ذلك.",
   "filter": "فلتر",
   "filterOriginal": "الأصلي",
   "filterGrayscale": "أبيض وأسود",

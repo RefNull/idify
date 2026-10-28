@@ -82,6 +82,45 @@ export async function cropIDPhoto({
   })
 }
 
+/**
+ * Blend part of the original background back into a cutout: the original
+ * photo drawn at `1 - removal` opacity under the cutout. At 1 the result is
+ * the plain cutout, at 0 the original photo. Both images must be the same
+ * crop. Returns a PNG blob URL.
+ */
+export async function mixOriginalBackground(
+  cutoutURL: string,
+  originalURL: string,
+  removal: number
+): Promise<string> {
+  const [cutout, original] = await Promise.all([
+    loadImage(cutoutURL),
+    loadImage(originalURL),
+  ])
+  const canvas = document.createElement('canvas')
+  canvas.width = cutout.naturalWidth || cutout.width
+  canvas.height = cutout.naturalHeight || cutout.height
+  const ctx = canvas.getContext('2d')
+  if (!ctx) {
+    throw new Error('Canvas 2D context unavailable')
+  }
+  ctx.globalAlpha = Math.min(Math.max(1 - removal, 0), 1)
+  ctx.drawImage(original, 0, 0, canvas.width, canvas.height)
+  ctx.globalAlpha = 1
+  ctx.drawImage(cutout, 0, 0, canvas.width, canvas.height)
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((file) => {
+      canvas.width = 0
+      canvas.height = 0
+      if (file) {
+        resolve(URL.createObjectURL(file))
+      } else {
+        reject(new Error('failed'))
+      }
+    }, 'image/png')
+  })
+}
+
 /** Render one finished ID photo (background + adjustments) onto a canvas. */
 export async function renderIDPhotoCanvas({
   image: imageURL,

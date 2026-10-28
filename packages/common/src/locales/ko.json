@@ -28,6 +28,8 @@
   "printSheet": "4x6인치 인화지",
   "printSheetSaved": "4x6 인화지: {title}({size}) {count}장, {columns}x{rows}, {dpi} DPI.",
   "guides": "안내선",
+  "backgroundRemoval": "배경 제거",
+  "backgroundRemovalHint": "100% 미만이면 원래 배경이 일부 비쳐 덜 가공된 느낌이 납니다. 그래도 기관에서는 편집된 사진으로 볼 수 있습니다.",
   "filter": "필터",
   "filterOriginal": "원본",
   "filterGrayscale": "흑백",

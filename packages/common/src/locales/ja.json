@@ -28,6 +28,8 @@
   "printSheet": "4x6インチ台紙",
   "printSheetSaved": "4x6台紙：{title}（{size}）× {count}枚、{columns}x{rows}、{dpi} DPI。",
   "guides": "ガイド",
+  "backgroundRemoval": "背景除去",
+  "backgroundRemovalHint": "100% 未満では元の背景が少し透けて、加工感が減ります。それでも当局は編集済みの写真とみなす場合があります。",
   "filter": "フィルター",
   "filterOriginal": "オリジナル",
   "filterGrayscale": "白黒",

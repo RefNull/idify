@@ -109,15 +109,23 @@ export default function Cropper() {
           !result
         const sourceImage = useOriginal ? image : result
 
-        const idPhoto = await cropIDPhoto({
-          image: sourceImage,
+        const cropOptions = {
           area: croppedArea,
           rotation,
           flipHorizontal,
           flipVertical,
           resolution: currentSpec.dimension,
+        }
+        const idPhoto = await cropIDPhoto({
+          ...cropOptions,
+          image: sourceImage,
         })
-        useAppStore.getState().retouch(idPhoto)
+        // The same crop of the original lets retouching blend some of the
+        // original background back in.
+        const original = useOriginal
+          ? undefined
+          : await cropIDPhoto({ ...cropOptions, image })
+        useAppStore.getState().retouch(idPhoto, original)
       } catch (error) {
         enqueueSnackbar(
           intl.formatMessage({

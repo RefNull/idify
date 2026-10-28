@@ -28,6 +28,8 @@
   "printSheet": "4x6 inch sheet",
   "printSheetSaved": "4x6 sheet: {count} x {title} ({size}), {columns}x{rows} at {dpi} DPI.",
   "guides": "Guides",
+  "backgroundRemoval": "Background removal",
+  "backgroundRemovalHint": "Below 100% some of the original background shows through, which looks less processed. Authorities may still count it as an edited photo.",
   "filter": "Filter",
   "filterOriginal": "Original",
   "filterGrayscale": "B&W",

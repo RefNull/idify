@@ -66,14 +66,11 @@ export function createHeadGuideSVG(
     eyeMid !== null ? eyeMid - EYE_IN_HEAD * head : placement.crown
   const y = (fraction: number) => fraction * height
   const cx = width / 2
-  const ellipse = (head: number) => {
-    const top = y(crownFor(head))
-    const h = head * height
-    return stroke(
+  const ellipse = (top: number, h: number) =>
+    stroke(
       (attrs) =>
         `<ellipse cx="${cx}" cy="${top + h / 2}" rx="${(h * 0.75) / 2}" ry="${h / 2}" ${attrs} stroke-opacity="0.6"/>`
     )
-  }
   const hline = (at: number) =>
     stroke(
       (attrs) =>
@@ -132,6 +129,19 @@ export function createHeadGuideSVG(
         : hline(top)) + label(bottom - 4, 'eyes', 'end')
   }
 
+  // Head outlines. With crown or chin bands, the smallest head spans the
+  // inner edges of the bands and the largest the outer edges, so the outlines
+  // meet the marker lines; otherwise both hang from the anchored crown.
+  const hasChinBand = minChin > 0 || maxChin > 0
+  const outlines =
+    hasCrownBand || hasChinBand
+      ? ellipse(crownBottomY, chinTopY - crownBottomY) +
+        (chinBottomY > chinTopY || crownBottomY > crownTopY
+          ? ellipse(crownTopY, chinBottomY - crownTopY)
+          : '')
+      : ellipse(y(crownFor(smallest)), smallest * height) +
+        (hasRange ? ellipse(y(crownFor(largest)), largest * height) : '')
+
   const centerOffset = spec.rules?.maxCenterOffset ?? 0
   const centerDrift = centerOffset > 0 ? y(centerOffset) : 0
 
@@ -141,8 +151,7 @@ export function createHeadGuideSVG(
     (hasCrownBand ? band(crownTopY, crownBottomY, 'rgba(80,220,140,0.2)') : '') +
     eyeBand +
     band(chinTopY, chinBottomY, 'rgba(80,220,140,0.2)') +
-    ellipse(smallest) +
-    (hasRange ? ellipse(largest) : '') +
+    outlines +
     vline(cx) +
     (centerDrift > 0
       ? vline(cx - centerDrift, 0.6) + vline(cx + centerDrift, 0.6)

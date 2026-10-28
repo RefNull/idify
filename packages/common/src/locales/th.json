@@ -28,6 +28,8 @@
   "printSheet": "แผ่นขนาด 4x6 นิ้ว",
   "printSheetSaved": "แผ่น 4x6: {title} ({size}) {count} รูป, {columns}x{rows} ที่ {dpi} DPI",
   "guides": "เส้นนำ",
+  "backgroundRemoval": "การลบพื้นหลัง",
+  "backgroundRemovalHint": "ต่ำกว่า 100% พื้นหลังเดิมจะปรากฏบางส่วน ทำให้ดูผ่านการแต่งน้อยลง แต่หน่วยงานอาจยังถือว่าเป็นภาพที่แก้ไขแล้ว",
   "filter": "ฟิลเตอร์",
   "filterOriginal": "ต้นฉบับ",
   "filterGrayscale": "ขาวดำ",

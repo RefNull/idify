@@ -28,6 +28,8 @@
   "printSheet": "Лист 4x6 дюйма",
   "printSheetSaved": "Лист 4x6: {count} x {title} ({size}), {columns}x{rows}, {dpi} DPI.",
   "guides": "Направляющие",
+  "backgroundRemoval": "Удаление фона",
+  "backgroundRemovalHint": "Ниже 100% часть исходного фона просвечивает, и фото выглядит менее обработанным. Органы всё равно могут счесть его отредактированным.",
   "filter": "Фильтр",
   "filterOriginal": "Оригинал",
   "filterGrayscale": "Ч/Б",
