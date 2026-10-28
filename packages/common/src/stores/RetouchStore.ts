@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { mixOriginalBackground } from '../utils/image'
 
 export type RetouchBackgroundGradientAngle =
   | 'l'
@@ -68,7 +69,17 @@ export interface RetouchAdjustment {
 }
 
 export interface RetouchState {
+  /** The photo being retouched: the cutout, with `removal` applied. */
   image: string
+  /** The cropped cutout, before any of the original is blended back. */
+  cutout: string
+  /** The same crop of the original photo; empty when there is no cutout. */
+  original: string
+  /**
+   * How much of the original background is removed, 0 to 1. Below 1 the
+   * original shows through at `1 - removal` opacity.
+   */
+  removal: number
   background: RetouchBackground
   adjustment: RetouchAdjustment
   /** Show the head-position guides over the preview. */
@@ -76,7 +87,8 @@ export interface RetouchState {
 }
 
 export interface RetouchActions {
-  setImage(image: string): void
+  setImage(image: string, original?: string): void
+  setRemoval(removal: number): void
   setBackground(background: RetouchBackground): void
   setAdjustment(adjustment: RetouchAdjustment): void
   toggleGuides(): void
@@ -87,6 +99,9 @@ export interface RetouchStore extends RetouchState, RetouchActions {}
 
 export const defaultRetouchState: RetouchState = {
   image: '',
+  cutout: '',
+  original: '',
+  removal: 1,
   background: {
     color: '#ffffff',
     gradient: {
@@ -105,15 +120,71 @@ function revokeBlobURL(url: string) {
   }
 }
 
+/** Every blob URL the store owns (the blended image is separate from the cutout). */
+function revokeAll({ image, cutout, original }: RetouchState) {
+  for (const url of new Set([image, cutout, original])) {
+    revokeBlobURL(url)
+  }
+}
+
+/** Bumped per image and on reset, so a stale blend is thrown away. */
+let mixRun = 0
+/** Blending is slow on big photos: run one at a time, latest value wins. */
+let mixing = false
+
 export const useRetouchStore = create<RetouchStore>((set, get) => ({
   ...defaultRetouchState,
-  setImage(image: string) {
-    const previous = get().image
-    if (previous !== image) {
-      revokeBlobURL(previous)
+  setImage(image: string, original = '') {
+    const previous = get()
+    if (previous.image !== image || previous.original !== original) {
+      revokeAll(previous)
     }
+    mixRun++
     // Keep the guide toggle across images; it is a view preference.
-    set({ ...defaultRetouchState, image, guides: get().guides })
+    set({
+      ...defaultRetouchState,
+      image,
+      cutout: image,
+      original,
+      guides: get().guides,
+    })
+  },
+  setRemoval(removal: number) {
+    set({ removal })
+    if (mixing) {
+      return
+    }
+    const run = mixRun
+    mixing = true
+    const apply = async () => {
+      try {
+        // Re-read after each blend: the slider may have moved meanwhile.
+        for (;;) {
+          const { cutout, original, removal: wanted } = get()
+          const url =
+            original && wanted < 1
+              ? await mixOriginalBackground(cutout, original, wanted)
+              : cutout
+          if (run !== mixRun) {
+            if (url !== cutout) revokeBlobURL(url)
+            return
+          }
+          const { image: previous } = get()
+          if (previous !== cutout && previous !== url) revokeBlobURL(previous)
+          set({ image: url })
+          if (get().removal === wanted) return
+        }
+      } finally {
+        mixing = false
+        // A new image arrived mid-blend and its slider moved: blend it now.
+        if (run !== mixRun && get().original && get().removal < 1) {
+          get().setRemoval(get().removal)
+        }
+      }
+    }
+    apply().catch(() => {
+      // Keep the last good blend.
+    })
   },
   setBackground(background: RetouchBackground) {
     set({ background })
@@ -125,7 +196,8 @@ export const useRetouchStore = create<RetouchStore>((set, get) => ({
     set({ guides: !get().guides })
   },
   reset() {
-    revokeBlobURL(get().image)
+    revokeAll(get())
+    mixRun++
     set(defaultRetouchState)
   },
 }))

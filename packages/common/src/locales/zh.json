@@ -30,6 +30,8 @@
   "printSheetTooLarge": "该规格尺寸过大，无法在4x6寸纸张上排版。",
   "printSheetFailed": "生成排版照片失败。",
   "guides": "参考线",
+  "backgroundRemoval": "背景移除",
+  "backgroundRemovalHint": "低于 100% 时会透出部分原始背景，看起来处理痕迹更少。但相关机构仍可能视为编辑过的照片。",
   "filter": "滤镜",
   "filterOriginal": "原图",
   "filterGrayscale": "黑白",

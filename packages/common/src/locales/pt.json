@@ -28,6 +28,8 @@
   "printSheet": "Folha de 4x6 polegadas",
   "printSheetSaved": "Folha 4x6: {count} x {title} ({size}), {columns}x{rows} a {dpi} DPI.",
   "guides": "Guias",
+  "backgroundRemoval": "Remoção do fundo",
+  "backgroundRemovalHint": "Abaixo de 100%, parte do fundo original aparece, o que parece menos processado. As autoridades ainda podem considerá-la uma foto editada.",
   "filter": "Filtro",
   "filterOriginal": "Original",
   "filterGrayscale": "P&B",

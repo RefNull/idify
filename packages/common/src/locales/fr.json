@@ -28,6 +28,8 @@
   "printSheet": "Planche 4x6 pouces",
   "printSheetSaved": "Planche 4x6 : {count} x {title} ({size}), {columns}x{rows} à {dpi} DPI.",
   "guides": "Repères",
+  "backgroundRemoval": "Suppression de l'arrière-plan",
+  "backgroundRemovalHint": "En dessous de 100 %, une partie de l'arrière-plan d'origine reste visible, ce qui paraît moins retouché. Les autorités peuvent quand même la considérer comme une photo modifiée.",
   "filter": "Filtre",
   "filterOriginal": "Original",
   "filterGrayscale": "N&B",

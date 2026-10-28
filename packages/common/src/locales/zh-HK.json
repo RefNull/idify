@@ -28,6 +28,8 @@
   "printSheet": "4x6 吋排版相片",
   "printSheetSaved": "4x6 排版：{count} 張 {title}（{size}），{columns}x{rows}，{dpi} DPI。",
   "guides": "參考線",
+  "backgroundRemoval": "背景移除",
+  "backgroundRemovalHint": "低於 100% 時會透出部分原有背景，看起來較少處理痕跡。但有關機構仍可能視為經編輯的相片。",
   "filter": "濾鏡",
   "filterOriginal": "原圖",
   "filterGrayscale": "黑白",

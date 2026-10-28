@@ -35,6 +35,26 @@ describe('getHeadPlacement', () => {
     expect(p.chin).toBeLessThanOrEqual(1)
   })
 
+  it.each(['finland_passport', 'finland_passport_online'])(
+    'places the %s head inside the Finnish Police bands',
+    (name) => {
+      // Poliisin passikuvaohje 2020: head 32-36 mm, 4-6 mm above the crown,
+      // 7-9 mm below the chin, on a 47 mm tall photo (653 px online).
+      const spec = byName(name)
+      const H = name.endsWith('online') ? 653 : 47
+      const mm = H / 47
+      const p = getHeadPlacement(spec)!
+      const rules = getPlacementRules(spec)
+      expect(solveCrown(rules, p.headRatio).fits).toBe(true)
+      expect(p.headRatio * H).toBeGreaterThanOrEqual(32 * mm - 0.5)
+      expect(p.headRatio * H).toBeLessThanOrEqual(36 * mm + 0.5)
+      expect(p.crown * H).toBeGreaterThanOrEqual(4 * mm - 0.5)
+      expect(p.crown * H).toBeLessThanOrEqual(6 * mm + 0.5)
+      expect((1 - p.chin) * H).toBeGreaterThanOrEqual(7 * mm - 0.5)
+      expect((1 - p.chin) * H).toBeLessThanOrEqual(9 * mm + 0.5)
+    }
+  )
+
   it.each(all.filter((s) => getHeadPlacement(s)).map((s) => [s.name, s] as const))(
     '%s: meets every rule that can be met',
     (_name, spec) => {

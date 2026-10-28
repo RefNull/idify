@@ -9,11 +9,30 @@ function round(value: number) {
   return Math.round(value * 10) / 10
 }
 
+function range(min: number, max: number) {
+  return round(min) === round(max)
+    ? `${round(min)} mm`
+    : `${round(min)}-${round(max)} mm`
+}
+
+/**
+ * Guide strokes are drawn twice, a solid black line under white dashes, so
+ * they read as alternating black and white segments on any photo.
+ */
+const DASH = '4,4'
+const stroke = (shape: (attrs: string) => string, width = 1) =>
+  shape(`fill="none" stroke="black" stroke-width="${width}"`) +
+  shape(
+    `fill="none" stroke="white" stroke-width="${width}" stroke-dasharray="${DASH}"`
+  )
+
 /**
  * An SVG overlay showing where the head must sit, from the same placement
- * model automatic framing uses: the target crown line, the band the chin must
- * land in, the eye band when the spec has one, a shaded clear-space strip at
- * the top, and head outlines at the smallest and largest permitted heights.
+ * model automatic framing uses: the crown line (or the band the crown must
+ * land in), the band the chin must land in, the eye band when the spec has
+ * one, a shaded clear-space strip at the top, head outlines at the smallest
+ * and largest permitted heights, and the vertical centre line (with the
+ * allowed drift either side when the spec sets one).
  * Returned as a data URL for use as a background image.
  */
 export function createHeadGuideSVG(
@@ -26,7 +45,17 @@ export function createHeadGuideSVG(
     return ''
   }
   const { width, height } = size
-  const { minHead, maxHead, minEye, maxEye, crownOffset } = placement
+  const {
+    minHead,
+    maxHead,
+    minEye,
+    maxEye,
+    crownOffset,
+    maxCrownOffset,
+    minChin,
+    maxChin,
+  } = placement
+  const { photoHeightMm } = metrics
   const smallest = minHead || placement.headRatio
   const largest = maxHead || smallest
   // With an eye band, heads of every size are anchored on its middle;
@@ -37,15 +66,25 @@ export function createHeadGuideSVG(
     eyeMid !== null ? eyeMid - EYE_IN_HEAD * head : placement.crown
   const y = (fraction: number) => fraction * height
   const cx = width / 2
-  const ellipse = (head: number) => {
-    const top = y(crownFor(head))
-    const h = head * height
-    return `<ellipse cx="${cx}" cy="${top + h / 2}" rx="${(h * 0.75) / 2}" ry="${h / 2}" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>`
-  }
-  const hline = (at: number, dash: string, opacity = 0.7) =>
-    `<line x1="0" y1="${at}" x2="${width}" y2="${at}" stroke="rgba(255,255,255,${opacity})" stroke-width="1"${
-      dash ? ` stroke-dasharray="${dash}"` : ''
-    }/>`
+  const ellipse = (top: number, h: number) =>
+    stroke(
+      (attrs) =>
+        `<ellipse cx="${cx}" cy="${top + h / 2}" rx="${(h * 0.75) / 2}" ry="${h / 2}" ${attrs} stroke-opacity="0.6"/>`
+    )
+  const hline = (at: number) =>
+    stroke(
+      (attrs) =>
+        `<line x1="0" y1="${at}" x2="${width}" y2="${at}" ${attrs}/>`
+    )
+  const vline = (at: number, opacity = 1) =>
+    stroke(
+      (attrs) =>
+        `<line x1="${at}" y1="0" x2="${at}" y2="${height}" ${attrs} stroke-opacity="${opacity}"/>`
+    )
+  const band = (top: number, bottom: number, fill: string) =>
+    bottom > top
+      ? `<rect x="0" y="${top}" width="${width}" height="${bottom - top}" fill="${fill}"/>`
+      : ''
 
   const font = Math.max(9, Math.min(13, height * 0.028))
   const label = (at: number, text: string, anchor: 'start' | 'end') =>
@@ -53,11 +92,32 @@ export function createHeadGuideSVG(
 
   const hasRange = largest > smallest
   const headLabel = hasRange
-    ? `${round(metrics.minHeadMm)}-${round(metrics.maxHeadMm)} mm`
+    ? range(metrics.minHeadMm, metrics.maxHeadMm)
     : `min ${round(metrics.minHeadMm || metrics.maxHeadMm)} mm`
-  const crownY = y(placement.crown)
-  const chinMinY = y(crownFor(smallest) + smallest)
-  const chinMaxY = y(crownFor(largest) + largest)
+
+  // Crown: the band between the smallest and largest clear space when the
+  // spec bounds both, otherwise the target line.
+  const hasCrownBand = crownOffset > 0 && maxCrownOffset > crownOffset
+  const crownTopY = y(hasCrownBand ? crownOffset : placement.crown)
+  const crownBottomY = y(hasCrownBand ? maxCrownOffset : placement.crown)
+  const crownLabel = hasCrownBand
+    ? `crown ${range(crownOffset * photoHeightMm, maxCrownOffset * photoHeightMm)} from top`
+    : 'crown'
+
+  // Chin: the spec's own clear-space band below the chin when it has one,
+  // otherwise where the smallest and largest heads end.
+  const chinTop = maxChin || minChin
+  const chinBottom = minChin || maxChin
+  const chinTopY = chinTop
+    ? y(1 - chinTop)
+    : y(crownFor(smallest) + smallest)
+  const chinBottomY = chinBottom
+    ? y(1 - chinBottom)
+    : y(crownFor(largest) + largest)
+  const chinLabel =
+    minChin > 0 && maxChin > minChin
+      ? `chin ${range(minChin * photoHeightMm, maxChin * photoHeightMm)} from bottom · head ${headLabel}`
+      : `chin · head ${headLabel}`
 
   let eyeBand = ''
   if (minEye > 0 || maxEye > 0) {
@@ -65,28 +125,43 @@ export function createHeadGuideSVG(
     const bottom = y(1 - (minEye || maxEye))
     eyeBand =
       (bottom > top
-        ? `<rect x="0" y="${top}" width="${width}" height="${bottom - top}" fill="rgba(110,170,255,0.18)"/>`
-        : hline(top, '2,3', 0.6)) + label(bottom - 4, 'eyes', 'end')
+        ? band(top, bottom, 'rgba(110,170,255,0.18)')
+        : hline(top)) + label(bottom - 4, 'eyes', 'end')
   }
+
+  // Head outlines. With crown or chin bands, the smallest head spans the
+  // inner edges of the bands and the largest the outer edges, so the outlines
+  // meet the marker lines; otherwise both hang from the anchored crown.
+  const hasChinBand = minChin > 0 || maxChin > 0
+  const outlines =
+    hasCrownBand || hasChinBand
+      ? ellipse(crownBottomY, chinTopY - crownBottomY) +
+        (chinBottomY > chinTopY || crownBottomY > crownTopY
+          ? ellipse(crownTopY, chinBottomY - crownTopY)
+          : '')
+      : ellipse(y(crownFor(smallest)), smallest * height) +
+        (hasRange ? ellipse(y(crownFor(largest)), largest * height) : '')
+
+  const centerOffset = spec.rules?.maxCenterOffset ?? 0
+  const centerDrift = centerOffset > 0 ? y(centerOffset) : 0
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">` +
-    (crownOffset > 0
-      ? `<rect x="0" y="0" width="${width}" height="${y(crownOffset)}" fill="rgba(0,0,0,0.22)"/>`
-      : '') +
+    (crownOffset > 0 ? band(0, y(crownOffset), 'rgba(0,0,0,0.22)') : '') +
+    (hasCrownBand ? band(crownTopY, crownBottomY, 'rgba(80,220,140,0.2)') : '') +
     eyeBand +
-    (hasRange
-      ? `<rect x="0" y="${chinMinY}" width="${width}" height="${
-          chinMaxY - chinMinY
-        }" fill="rgba(80,220,140,0.2)"/>`
+    band(chinTopY, chinBottomY, 'rgba(80,220,140,0.2)') +
+    outlines +
+    vline(cx) +
+    (centerDrift > 0
+      ? vline(cx - centerDrift, 0.6) + vline(cx + centerDrift, 0.6)
       : '') +
-    ellipse(smallest) +
-    (hasRange ? ellipse(largest) : '') +
-    hline(crownY, '') +
-    hline(chinMinY, '4,3') +
-    (hasRange ? hline(chinMaxY, '4,3') : '') +
-    label(Math.max(font, crownY - 4), 'crown', 'start') +
-    label(chinMinY - 4, `chin · head ${headLabel}`, 'start') +
+    hline(crownTopY) +
+    (crownBottomY > crownTopY ? hline(crownBottomY) : '') +
+    hline(chinTopY) +
+    (chinBottomY > chinTopY ? hline(chinBottomY) : '') +
+    label(Math.max(font, crownTopY - 4), crownLabel, 'start') +
+    label(chinTopY - 4, chinLabel, 'start') +
     `</svg>`
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`

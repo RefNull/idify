@@ -34,10 +34,24 @@ describe('spec.json', () => {
         'minHeadHeight',
         'maxHeadHeight',
         'minHeadOffset',
+        'maxHeadOffset',
+        'minChinOffset',
+        'maxChinOffset',
+        'maxCenterOffset',
       ] as const) {
         const value = rules[key]
         if (value !== undefined && !(value > 0 && value <= 1)) {
           bad.push(`${spec.name}.${key}=${value}`)
+        }
+      }
+      for (const [min, max] of [
+        ['minHeadOffset', 'maxHeadOffset'],
+        ['minChinOffset', 'maxChinOffset'],
+      ] as const) {
+        const lo = rules[min]
+        const hi = rules[max]
+        if (lo !== undefined && hi !== undefined && lo > hi) {
+          bad.push(`${spec.name}: ${min} > ${max}`)
         }
       }
       const { minHeadHeight, maxHeadHeight, minHeadOffset = 0 } = rules
